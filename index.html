@@ -1,0 +1,2431 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Acompañamiento en Campos Pedagógicos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Documento de una columna con panel lateral, medida de lectura cerca de 68 caracteres.
+   Tokens del DESIGN.md del proyecto ESR UCV2595. */
+:root {
+  --bg: #f4efe9;
+  --surface: #ffffff;
+  --surface-2: #faf7f3;
+  --ink: #16314c;
+  --ink-2: #4a6075;
+  --ink-3: #5e6e7d;
+  --line: #ddd3c8;
+  --azul: #24588d;
+  --azul-2: #1d71b8;
+  --cian: #008cba;
+  --accion: #00739b;
+  --morado: #6b4d80;
+  --rojo: #c0483f;
+  --amarillo: #f4ce46;
+  --focus: #008cba;
+  --shadow: 0 1px 2px rgba(22,49,76,.06), 0 8px 24px rgba(22,49,76,.07);
+  --lift: 0 6px 18px rgba(22,49,76,.10);
+  --f-display: 'Poppins', 'Segoe UI', sans-serif;
+  --f-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1c28; --surface: #16283a; --surface-2: #1b3048;
+    --ink: #e8eef4; --ink-2: #a9bdd0; --ink-3: #7d93a8; --line: #2a4256;
+    --azul: #6fa8dc; --azul-2: #58a0d8; --cian: #3fb8dd; --accion: #3fb8dd;
+    --morado: #c4a2d6; --rojo: #ef8b82;
+    --focus: #6cc6ee;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --lift: 0 6px 18px rgba(0,0,0,.4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1c28; --surface: #16283a; --surface-2: #1b3048;
+  --ink: #e8eef4; --ink-2: #a9bdd0; --ink-3: #7d93a8; --line: #2a4256;
+  --azul: #6fa8dc; --azul-2: #58a0d8; --cian: #3fb8dd; --accion: #3fb8dd;
+  --morado: #c4a2d6; --rojo: #ef8b82;
+  --focus: #6cc6ee;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  --lift: 0 6px 18px rgba(0,0,0,.4);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.6; margin: 0; }
+h1,h2,h3,h4,h5 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+img { max-width: 100%; }
+a { color: var(--azul-2); }
+:where(a,summary,button):focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+
+/* progreso de lectura, fijo arriba */
+.progreso { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; width: 100%; height: 4px; background: rgba(22,49,76,.12); z-index: 101; }
+.progreso > i { display: block; height: 100%; width: 0; background: var(--cian); transition: width .1s linear; }
+
+/* control de tema */
+.tema {
+  position: fixed; z-index: 100;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  min-height: 44px; padding: 0 16px; border-radius: 999px;
+  background: var(--surface); color: var(--ink-2); border: 1.5px solid var(--line);
+  box-shadow: var(--shadow); cursor: pointer;
+  font-family: var(--f-display); font-size: 13px; font-weight: 600;
+  transition: transform .2s var(--ease), border-color .2s var(--ease);
+}
+.tema:hover { transform: translateY(-2px); border-color: var(--azul-2); }
+
+/* botón subir */
+.subir {
+  position: fixed; z-index: 100;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  min-height: 44px; padding: 0 16px; border-radius: 999px;
+  background: var(--surface); color: var(--azul); border: 1.5px solid var(--line);
+  box-shadow: var(--shadow); cursor: pointer;
+  font-family: var(--f-display); font-size: 13px; font-weight: 600;
+  transition: all .2s var(--ease);
+  opacity: 0; pointer-events: none; transform: translateY(10px);
+}
+.subir.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.subir:hover { transform: translateY(-2px); border-color: var(--azul-2); }
+
+.franja { height: 20px; background: repeating-linear-gradient(90deg,
+  #24588d 0 48px, #e73a34 48px 96px, #f4ce46 96px 144px, #1d71b8 144px 192px,
+  #a3d1e3 192px 240px, #9366a9 240px 288px, #36a9e1 288px 336px, #ee7269 336px 384px,
+  #008cba 384px 432px, #30b6be 432px 480px); }
+
+.sheet { max-width: 820px; margin: 0 auto; background: var(--surface); border-left: 1px solid var(--line); border-right: 1px solid var(--line); min-width: 0; }
+.pad {
+  padding-left: max(22px, env(safe-area-inset-left, 0px));
+  padding-right: max(22px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 680px) {
+  .pad {
+    padding-left: max(64px, env(safe-area-inset-left, 0px));
+    padding-right: max(64px, env(safe-area-inset-right, 0px));
+  }
+}
+
+header.doc { background: var(--azul); color: #fff; padding-block: 38px 32px; border-bottom: 4px solid var(--cian); }
+header.doc .eyebrow { font-family: var(--f-display); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #a3d1e3; }
+header.doc h1 { font-size: 32px; font-weight: 700; line-height: 1.12; margin-top: 8px; }
+@media (min-width: 680px) { header.doc h1 { font-size: 40px; } }
+header.doc .sub { font-size: 17px; color: #cfe2ee; margin-top: 12px; max-width: 58ch; }
+header.doc .meta { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.25); font-family: var(--f-display); font-size: 12.5px; font-weight: 500; color: #a3d1e3; display: flex; flex-wrap: wrap; gap: 6px 22px; }
+
+/* índice */
+nav.idx { background: var(--surface-2); border-bottom: 1px solid var(--line); padding-block: 20px; }
+nav.idx p { font-family: var(--f-display); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+nav.idx ol { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 8px; counter-reset: s; }
+nav.idx a {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px;
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+  font-family: var(--f-display); font-size: 13px; font-weight: 600; color: var(--ink-2); text-decoration: none;
+  transition: border-color .2s var(--ease), transform .2s var(--ease), color .2s var(--ease);
+}
+nav.idx a:hover { border-color: var(--azul-2); color: var(--azul); transform: translateY(-2px); }
+nav.idx a::before { counter-increment: s; content: counter(s); font-size: 11px; color: var(--cian); }
+nav.idx a.activo { border-color: var(--cian); color: var(--azul); background: var(--surface); }
+nav.idx ul.idx-extra { list-style: none; padding: 0; margin: 8px 0 0; display: flex; }
+nav.idx ul.idx-extra a::before { counter-increment: none; content: "§"; color: var(--ink-3); }
+.sidebar nav.idx ul.idx-extra { flex-direction: column; gap: 8px; }
+
+section { padding-block: 30px; border-bottom: 1px solid var(--line); scroll-margin-top: 20px; }
+section:last-of-type { border-bottom: none; }
+.num { font-family: var(--f-display); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--cian); }
+section h2 { font-size: 26px; font-weight: 700; color: var(--azul); margin-top: 6px; }
+section .intro { font-size: 17.5px; color: var(--ink-2); margin-top: 12px; max-width: 68ch; }
+section p { max-width: 68ch; }
+section h3 { font-family: var(--f-display); font-size: 19px; font-weight: 600; color: var(--azul); margin-top: 30px; margin-bottom: 10px; }
+.flow { display: grid; gap: 14px; margin-top: 16px; }
+.flow p { color: var(--ink-2); }
+.nota { font-size: 14.5px; color: var(--ink-3); margin-top: 14px; max-width: 72ch; }
+
+/* pestañas de rol */
+.tabs { display: flex; gap: 8px; margin-top: 22px; flex-wrap: wrap; }
+.tab {
+  background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 10px;
+  padding: 10px 15px; min-height: 44px; font-family: var(--f-display); font-size: 13.5px; font-weight: 600;
+  color: var(--ink-2); cursor: pointer; transition: all .2s var(--ease);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.tab:hover { border-color: var(--azul-2); transform: translateY(-1px); }
+.tab[aria-selected="true"] { background: var(--surface); color: var(--azul); }
+.tab[data-t="pf"][aria-selected="true"] { border-color: var(--rojo); color: var(--rojo); }
+.tab[data-t="mentor"][aria-selected="true"] { border-color: var(--morado); color: var(--morado); }
+.tab[data-t="tutor"][aria-selected="true"] { border-color: var(--cian); color: var(--cian); }
+.tab .pill { font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; background: var(--cian); color: #fff; border-radius: 999px; padding: 2px 7px; font-weight: 700; }
+:root[data-theme="dark"] .tab .pill { color: #0f1c28; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tab .pill { color: #0f1c28; } }
+.panel { display: none; padding-top: 18px; }
+.panel.on { display: grid; animation: fade .3s var(--ease) both; }
+@keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+.rol { padding-left: 18px; display: grid; gap: 8px; border-left: 4px solid var(--line); }
+.rol.pf { border-left-color: var(--rojo); }
+.rol.mentor { border-left-color: var(--morado); }
+.rol.tutor { border-left-color: var(--cian); }
+.rol h3 { font-size: 20px; font-weight: 600; margin: 0; }
+.rol.pf h3 { color: var(--rojo); } .rol.mentor h3 { color: var(--morado); } .rol.tutor h3 { color: var(--cian); }
+.rol .sigla { font-family: var(--f-display); font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.rol p { color: var(--ink-2); font-size: 16.5px; }
+
+/* acordeones */
+details.acc { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: background-color .25s var(--ease), box-shadow .25s var(--ease); }
+details.acc[open] { background: var(--surface); box-shadow: var(--shadow); }
+details.acc summary { padding: 16px 20px; font-family: var(--f-display); font-size: 17px; font-weight: 600; color: var(--azul); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 44px; }
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: '+'; font-size: 24px; font-weight: 400; color: var(--ink-3); transition: transform .3s var(--ease); flex: none; }
+details.acc[open] summary::after { transform: rotate(45deg); }
+details.acc .in { padding: 0 20px 20px; border-top: 1px solid var(--line); }
+details.acc .in > p { color: var(--ink-2); font-size: 16px; margin-top: 14px; }
+details.acc.pf summary { color: var(--rojo); }
+details.acc.mentor summary { color: var(--morado); }
+details.acc.tutor summary { color: var(--cian); }
+details.acc.evitar summary { color: var(--rojo); }
+
+ul.orient { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 13px; }
+ul.orient li { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 16.5px; color: var(--ink-2); max-width: 68ch; }
+ul.orient li::before { content: ""; width: 9px; height: 9px; border-radius: 2px; background: var(--cian); margin-top: 9px; }
+ul.orient.pf li::before { background: var(--rojo); }
+ul.orient.mentor li::before { background: var(--morado); }
+ul.orient.tutor li::before { background: var(--cian); }
+ul.orient.evitar li::before { background: var(--rojo); }
+ul.orient b { color: var(--ink); font-family: var(--f-display); font-weight: 600; }
+ul.orient.descriptores li::before { border-radius: 50%; background: var(--azul); }
+
+/* preguntas de ejemplo */
+ul.preguntas { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+ul.preguntas li {
+  font-size: 16px; font-style: italic; color: var(--ink); background: var(--surface-2);
+  border: 1px solid var(--line); border-left: 3px solid var(--cian);
+  border-radius: 0 8px 8px 0; padding: 11px 14px; max-width: 68ch;
+  transition: transform .2s var(--ease), border-left-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+ul.preguntas li:hover { transform: translateX(4px); border-left-color: var(--azul); box-shadow: var(--shadow); }
+details.acc[open] ul.preguntas li { background: var(--surface-2); }
+
+/* tarjetas */
+.cards { display: grid; gap: 14px; margin-top: 20px; }
+@media (min-width: 720px) { .cards.c3 { grid-template-columns: repeat(3, 1fr); } .cards.c2 { grid-template-columns: repeat(2, 1fr); } }
+.card {
+  background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; padding: 20px;
+  display: grid; gap: 8px; align-content: start; min-width: 0;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), background-color .2s var(--ease);
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--lift); background: var(--surface); }
+.card .n { font-family: var(--f-display); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.card .t { font-family: var(--f-display); font-size: 17px; font-weight: 600; color: var(--azul); }
+.card p { font-size: 15px; color: var(--ink-2); }
+
+/* Tarjetas interactivas 3D (niveles de práctica) */
+.flip-grid { display: grid; gap: 16px; margin-top: 24px; }
+@media (min-width: 720px) { .flip-grid { grid-template-columns: repeat(3, 1fr); } }
+.scene { perspective: 1000px; cursor: pointer; min-height: 330px; outline: none; }
+.c-flip { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; position: relative; }
+.scene:hover .c-flip, .scene:focus .c-flip, .scene.is-flipped .c-flip { transform: rotateY(180deg); }
+.face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; border: 1.5px solid var(--line); padding: 24px; box-shadow: var(--shadow); }
+.face-front { background: var(--surface-2); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 12px; transition: border-color 0.3s var(--ease); }
+.scene:hover .face-front { border-color: var(--azul-2); }
+.etapa-num { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: var(--surface); border: 2.5px solid var(--cian); border-radius: 50%; font-family: var(--f-display); font-size: 28px; font-weight: 700; color: var(--azul); box-shadow: var(--lift); }
+.face-front .t { font-family: var(--f-display); font-size: 19px; font-weight: 700; color: var(--azul); margin: 0; }
+.face-front .horas { font-family: var(--f-display); font-size: 12.5px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.click-hint { font-size: 12.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-top: 4px; }
+.face-back { background: var(--surface); transform: rotateY(180deg); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border-color: var(--azul-2); box-shadow: var(--lift); overflow: auto; }
+.face-back .n { color: var(--cian); font-family: var(--f-display); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.face-back .t { font-family: var(--f-display); font-size: 17px; font-weight: 700; color: var(--azul); margin-bottom: 4px; }
+.face-back p:last-child { font-size: 14.5px; color: var(--ink-2); line-height: 1.5; margin: 0; }
+
+/* escalera de la pregunta interactiva */
+.upg-container { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; padding: 32px 24px; text-align: center; margin-top: 18px; box-shadow: var(--shadow); transition: background-color .3s; }
+.upg-meta { font-family: var(--f-display); font-size: 12.5px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; transition: color .3s; }
+.upg-q { font-size: 21px; color: var(--azul); font-style: italic; font-weight: 600; min-height: 84px; display: flex; align-items: center; justify-content: center; line-height: 1.3; max-width: none; }
+.upg-reason { font-size: 15.5px; color: var(--ink-2); margin-top: 12px; min-height: 48px; max-width: 600px; margin-inline: auto; }
+.upg-btn { margin-top: 24px; background: var(--azul); color: #fff; border: none; padding: 12px 24px; border-radius: 999px; font-family: var(--f-display); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.25s var(--ease); box-shadow: var(--lift); display: inline-flex; align-items: center; gap: 8px; }
+.upg-btn:hover { transform: translateY(-3px); background: var(--azul-2); }
+.upg-dots { display: flex; gap: 8px; justify-content: center; margin-top: 28px; }
+.upg-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); transition: 0.3s; }
+.upg-dot.active { background: var(--cian); transform: scale(1.3); }
+
+/* simulador dos caminos */
+.sc-container { border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 20px; background: var(--surface-2); transition: box-shadow 0.3s; }
+.sc-header { display: flex; border-bottom: 1.5px solid var(--line); background: var(--surface-2); }
+.sc-tab { flex: 1; padding: 16px 10px; font-family: var(--f-display); font-weight: 600; font-size: 14.5px; color: var(--ink-2); background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.2s; outline: none; }
+.sc-tab:hover, .sc-tab:focus-visible { background: rgba(22, 49, 76, 0.05); color: var(--azul); }
+.sc-tab.on { color: var(--azul); border-bottom-color: var(--azul); background: var(--surface); }
+.sc-body { padding: 24px; background: var(--surface); display: none; }
+.sc-body.on { display: block; animation: fade .3s var(--ease) both; }
+.sc-sit { font-size: 17px; color: var(--ink); margin: 0 0 20px 0; border-left: 4px solid var(--cian); padding-left: 14px; line-height: 1.5; }
+.sc-opts { display: grid; gap: 12px; }
+.sc-btn { text-align: left; padding: 16px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface-2); cursor: pointer; font-size: 15.5px; color: var(--ink-2); transition: all 0.2s var(--ease); display: flex; gap: 12px; align-items: flex-start; font-family: var(--f-body); }
+.sc-btn:hover { border-color: var(--azul-2); transform: translateX(4px); box-shadow: var(--shadow); background: var(--surface); }
+.sc-btn.selected { border-color: var(--azul); border-width: 2px; background: var(--surface); color: var(--azul); box-shadow: var(--shadow); }
+.sc-btn .icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+.sc-feedback { margin-top: 16px; padding: 18px; border-radius: 10px; font-size: 15.5px; line-height: 1.5; display: none; animation: fade .4s var(--ease) both; }
+.dir-feed { background: #fdf3f2; border: 1px solid #f5c2c0; color: #a32a22; }
+.ref-feed { background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dir-feed { background: rgba(192,72,63,0.1); border-color: rgba(192,72,63,0.3); color: #f4b4b0; }
+  :root:not([data-theme="light"]) .ref-feed { background: rgba(0,140,186,0.1); border-color: rgba(0,140,186,0.3); color: #bae6fd; }
+}
+:root[data-theme="dark"] .dir-feed { background: rgba(192,72,63,0.1); border-color: rgba(192,72,63,0.3); color: #f4b4b0; }
+:root[data-theme="dark"] .ref-feed { background: rgba(0,140,186,0.1); border-color: rgba(0,140,186,0.3); color: #bae6fd; }
+
+/* niveles */
+.niveles { display: grid; gap: 8px; margin-top: 16px; }
+.niv { display: grid; grid-template-columns: 28px 1fr; gap: 14px; align-items: start; padding: 13px 15px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface-2); }
+.niv .k { font-family: var(--f-display); font-size: 15px; font-weight: 700; color: var(--cian); }
+.niv .t { font-family: var(--f-display); font-size: 16px; font-weight: 600; color: var(--azul); }
+.niv p { font-size: 15px; color: var(--ink-2); margin-top: 3px; }
+
+/* secuencia de sesión */
+.pasos { display: grid; gap: 10px; margin-top: 18px; counter-reset: paso; }
+.paso {
+  display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start;
+  background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  transition: transform .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.paso:hover { transform: translateX(4px); border-color: var(--azul-2); box-shadow: var(--shadow); }
+.paso::before {
+  counter-increment: paso; content: counter(paso);
+  width: 34px; height: 34px; border-radius: 50%; background: var(--surface);
+  border: 2px solid var(--cian); color: var(--azul);
+  font-family: var(--f-display); font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.paso .t { font-family: var(--f-display); font-size: 16px; font-weight: 600; color: var(--azul); }
+.paso p { font-size: 15px; color: var(--ink-2); margin-top: 3px; }
+
+/* matriz */
+.mz { display: grid; grid-template-columns: auto 1fr 1fr; gap: 7px; margin-top: 16px; }
+.mz .ax { font-family: var(--f-display); font-size: 11px; font-weight: 600; color: var(--ink-3); display: flex; align-items: center; }
+.mz .ax.v { writing-mode: vertical-rl; transform: rotate(180deg); justify-content: center; grid-row: span 2; }
+.mz .q { border: 1.5px solid var(--line); border-radius: 10px; padding: 13px; background: var(--surface-2); display: grid; gap: 4px; align-content: start; }
+.mz .q.best { border-color: var(--azul); border-width: 2.5px; background: var(--surface); }
+.mz .q b { font-family: var(--f-display); font-size: 14.5px; font-weight: 600; color: var(--azul); }
+.mz .q span { font-size: 13.5px; color: var(--ink-2); }
+
+.destacado { background: var(--surface-2); border: 1px solid var(--line); border-left: 4px solid var(--azul); border-radius: 0 12px 12px 0; padding: 20px 22px; margin-top: 22px; display: grid; gap: 10px; }
+.destacado .lab { font-family: var(--f-display); font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--azul); }
+.destacado p { font-size: 16.5px; color: var(--ink-2); }
+.destacado .cita { font-size: 17px; color: var(--ink); font-style: italic; display: block; border-left: 2px solid var(--line); padding-left: 14px; }
+.destacado.idea { border-left-color: var(--cian); }
+.destacado.idea .lab { color: var(--cian); }
+.destacado.alerta { border-left-color: var(--rojo); }
+.destacado.alerta .lab { color: var(--rojo); }
+.destacado.mentoria { border-left-color: var(--morado); }
+.destacado.mentoria .lab { color: var(--morado); }
+.pendiente { border-left-color: var(--amarillo); }
+.pendiente .lab { color: #7d6210; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pendiente .lab { color: var(--amarillo); } }
+:root[data-theme="dark"] .pendiente .lab { color: var(--amarillo); }
+
+/* interactividad niveles, modelos y posiciones */
+details.acc.niv-acc { margin-bottom: 8px; }
+details.acc.niv-acc summary { min-height: auto; padding: 12px 15px; }
+details.acc.niv-acc summary::after { font-size: 20px; }
+.niv-header { display: flex; align-items: center; gap: 14px; }
+.niv-header .k { font-family: var(--f-display); font-size: 15px; font-weight: 700; color: var(--cian); background: var(--surface); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1.5px solid var(--line); flex: none; }
+.niv-header .t { font-family: var(--f-display); font-size: 16px; font-weight: 600; color: var(--azul); }
+.niv-acc .in p { font-size: 15px; color: var(--ink-2); }
+.niv-ejemplo { margin-top: 10px; padding: 12px; background: var(--surface); border-radius: 8px; font-size: 14.5px; color: var(--ink-3); border-left: 3px solid var(--cian); }
+
+.ciclos-tabs { margin-top: 16px; }
+.ciclo-card { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 16px; display: none; }
+.ciclo-card.on { display: block; animation: fade .3s var(--ease) both; }
+.ciclo-card h4 { font-family: var(--f-display); color: var(--azul); font-size: 18px; margin: 0 0 8px 0; }
+.ciclo-card .fuente { font-size: 13.5px; color: var(--ink-3); margin-bottom: 8px; }
+.fases-list { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.fase-pill { background: var(--surface); border: 1px solid var(--line); padding: 5px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+
+/* ciclos interactivos */
+.cycle-wrapper { display: grid; gap: 16px; margin-top: 18px; }
+.cycle-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.cycle-node { background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 14px; color: var(--ink-2); cursor: pointer; transition: all .2s var(--ease); font-family: var(--f-body); }
+.cycle-node:hover { border-color: var(--azul-2); color: var(--azul); transform: translateY(-2px); box-shadow: var(--shadow); }
+.cycle-node.on { background: var(--azul); border-color: var(--azul); color: #fff; transform: translateY(0); box-shadow: none; }
+.cycle-arrow { color: var(--ink-3); font-weight: 700; font-size: 18px; padding: 0 4px; }
+.cycle-detail { background: var(--surface); border-left: 4px solid var(--azul); padding: 18px; border-radius: 8px; min-height: 90px; box-shadow: var(--shadow); }
+.cycle-detail h5 { margin: 0 0 6px 0; font-family: var(--f-display); font-size: 16px; color: var(--azul); }
+.cycle-detail p { margin: 0; font-size: 15.5px; color: var(--ink-2); }
+
+button.q { text-align: left; cursor: pointer; transition: all .2s var(--ease); outline: none; padding: 13px; font-family: var(--f-body); border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface-2); display: grid; gap: 4px; align-content: start; }
+button.q:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+button.q b { font-family: var(--f-display); font-size: 14.5px; font-weight: 600; color: var(--azul); }
+button.q span { font-size: 13.5px; color: var(--ink-2); }
+button.q[aria-selected="true"] { border-color: var(--focus); border-width: 2.5px; background: var(--surface); box-shadow: var(--shadow); }
+button.q.best[aria-selected="true"] { border-color: var(--azul); }
+.m-panel { display: none; }
+.m-panel.on { display: block; animation: fade .3s var(--ease) both; }
+.m-info-box { background: var(--surface-2); border: 1.5px solid var(--line); border-left: 4px solid var(--focus); border-radius: 8px; padding: 18px; margin-top: 16px; }
+.m-info-box.best { border-left-color: var(--azul); }
+.m-info-box h4 { font-family: var(--f-display); font-size: 16.5px; font-weight: 600; color: var(--focus); margin: 0 0 6px 0; }
+.m-info-box.best h4 { color: var(--azul); }
+.m-info-box p { font-size: 15.5px; color: var(--ink-2); margin: 0; }
+
+table { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--f-display); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+td { color: var(--ink-2); }
+td:first-child { font-family: var(--f-display); font-weight: 600; color: var(--ink); }
+tr:last-child td { border-bottom: none; }
+.tabla-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; margin-top: 18px; min-width: 0; }
+.tabla-wrap table { min-width: 580px; }
+
+dl.glo { margin: 16px 0 0; display: grid; gap: 12px; }
+dl.glo dt { font-family: var(--f-display); font-size: 15.5px; font-weight: 600; color: var(--azul); }
+dl.glo dd { margin: 3px 0 0; font-size: 15.5px; color: var(--ink-2); max-width: 68ch; }
+
+footer.doc { padding-block: 34px 48px; background: var(--surface-2); border-top: 1px solid var(--line); }
+footer.doc h2 { font-family: var(--f-display); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+footer.doc details.sec > summary h2 { color: var(--ink-2); }
+footer.doc details.sec > summary:hover h2 { color: var(--azul); }
+footer.doc .cuenta { letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--ink-3); margin-left: 10px; }
+footer.doc details.sec > summary .mas { width: 32px; height: 32px; font-size: 20px; }
+footer.doc .refs { margin-top: 4px; }
+footer.doc .refs { margin-top: 14px; display: grid; gap: 8px; }
+footer.doc .refs p { font-size: 14px; color: var(--ink-3); line-height: 1.5; max-width: 76ch; }
+footer.doc .refs em { font-style: italic; }
+footer.doc .refs p { display: block; }
+a.ref-link { display: inline-block; margin-left: 2px; white-space: nowrap;
+  font-family: var(--f-display); font-size: 12px; font-weight: 600; text-decoration: none;
+  color: var(--cian); border-bottom: 1px solid transparent; transition: color .2s var(--ease), border-color .2s var(--ease); }
+a.ref-link:hover { color: var(--azul); border-bottom-color: var(--azul); }
+footer.doc .cierre { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink-3); max-width: 76ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+
+/* términos con definición */
+.term { position: relative; border-bottom: 1.5px dotted var(--cian); cursor: help; }
+.term::after {
+  content: attr(data-def);
+  position: absolute; left: 0; top: calc(100% + 9px); z-index: 60;
+  width: max-content; max-width: min(300px, 68vw);
+  background: var(--surface); color: var(--ink-2); border: 1.5px solid var(--cian);
+  border-radius: 10px; box-shadow: var(--lift); padding: 11px 14px;
+  font-family: var(--f-body); font-size: 14.5px; font-style: normal; font-weight: 400; line-height: 1.45;
+  pointer-events: none;
+  transform: translateX(var(--tt-x, 0px));
+  display: none;
+}
+.term:hover::after, .term:focus-visible::after, .term.abierto::after { display: block; animation: fade-tt .18s var(--ease) both; }
+@keyframes fade-tt { from { opacity: 0; } to { opacity: 1; } }
+
+/* buscador de preguntas */
+.buscador { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 18px; }
+.buscador .f-lab { font-family: var(--f-display); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.buscador .f-lab + .chips { margin-bottom: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  min-height: 36px; padding: 0 13px; border-radius: 999px;
+  background: var(--surface); border: 1.5px solid var(--line); color: var(--ink-2);
+  font-family: var(--f-display); font-size: 12.5px; font-weight: 600; cursor: pointer;
+  transition: border-color .2s var(--ease), color .2s var(--ease), background-color .2s var(--ease);
+}
+.chip:hover { border-color: var(--azul-2); color: var(--azul); }
+.chip.on { border-color: var(--cian); color: var(--azul); background: var(--surface); border-width: 2px; }
+.cuenta-preg { font-family: var(--f-display); font-size: 12.5px; font-weight: 600; color: var(--ink-3); margin-top: 6px; font-variant-numeric: tabular-nums; }
+ul.lista-preg { margin-top: 10px; }
+ul.lista-preg li { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; cursor: pointer; }
+ul.lista-preg li[hidden] { display: none; }
+ul.lista-preg .p-fn { font-family: var(--f-display); font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-style: normal; white-space: nowrap; }
+ul.lista-preg li.copiada { border-left-color: var(--azul); }
+ul.lista-preg li.copiada .p-fn { color: var(--azul); }
+.sin-resultado { font-size: 15.5px; color: var(--ink-3); margin-top: 14px; }
+
+/* pauta de foco acordado */
+.pauta { display: grid; gap: 18px; margin-top: 20px; }
+.pauta-bloque { background: var(--surface-2); border: 1.5px solid var(--line); border-left: 4px solid var(--cian); border-radius: 0 12px 12px 0; padding: 18px 20px; display: grid; gap: 12px; }
+.pauta-bloque.antes { border-left-color: var(--morado); }
+.pauta-bloque.despues { border-left-color: var(--azul); }
+.pauta-bloque.propia { border-left-color: var(--amarillo); }
+.pauta-bloque > .cab { display: grid; gap: 3px; }
+.pauta-bloque .m { font-family: var(--f-display); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.pauta-bloque .t { font-family: var(--f-display); font-size: 17px; font-weight: 600; color: var(--azul); }
+.pauta-bloque.antes .t { color: var(--morado); }
+.campo { display: grid; gap: 5px; min-width: 0; }
+.campo label { font-family: var(--f-display); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.campo .pista { font-size: 13.5px; color: var(--ink-3); }
+.campo input, .campo select, .campo textarea {
+  width: 100%; font-family: var(--f-body); font-size: 15.5px; color: var(--ink);
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 9px; padding: 10px 12px;
+  transition: border-color .2s var(--ease);
+}
+.campo textarea { resize: vertical; min-height: 76px; line-height: 1.5; }
+.campo input:focus, .campo select:focus, .campo textarea:focus { outline: none; border-color: var(--focus); }
+.fila { display: grid; gap: 12px; }
+@media (min-width: 640px) { .fila.f3 { grid-template-columns: 1fr 1fr 1fr; } }
+.pauta-acciones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 4px; }
+.btn {
+  min-height: 42px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+  font-family: var(--f-display); font-size: 14px; font-weight: 600;
+  border: 1.5px solid var(--azul); background: var(--azul); color: #fff;
+  transition: transform .2s var(--ease), background-color .2s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); background: var(--azul-2); }
+.btn.sec2 { background: var(--surface); color: var(--ink-2); border-color: var(--line); }
+.btn.sec2:hover { border-color: var(--rojo); color: var(--rojo); background: var(--surface); }
+.estado { font-family: var(--f-display); font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+
+/* avisos y listas dinámicas de la pauta */
+.aviso-nivel { background: var(--surface); border: 1.5px solid var(--line); border-left: 4px solid var(--cian); border-radius: 0 10px 10px 0; padding: 14px 16px; display: grid; gap: 6px; animation: fade .3s var(--ease) both; }
+.aviso-nivel .lab { font-family: var(--f-display); font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--cian); }
+.aviso-nivel p { font-size: 15.5px; color: var(--ink-2); }
+.s-lab { font-family: var(--f-display); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 7px; }
+.sugeridos { animation: fade .3s var(--ease) both; }
+.sugeridos .chip { font-weight: 500; font-family: var(--f-body); font-size: 13.5px; text-align: left; min-height: 34px; padding: 6px 13px; }
+.fases { animation: fade .3s var(--ease) both; }
+.fase {
+  display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: start;
+  padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 9px;
+  background: var(--surface); margin-bottom: 7px; cursor: pointer;
+  transition: border-color .2s var(--ease);
+}
+.fase:hover { border-color: var(--azul-2); }
+.fase input { width: 19px; height: 19px; margin-top: 2px; accent-color: var(--cian); flex: none; }
+.fase .n { font-family: var(--f-display); font-size: 14.5px; font-weight: 600; color: var(--azul); }
+.fase .q { font-size: 14px; color: var(--ink-3); font-style: italic; margin-top: 2px; }
+.fase.lista .n { color: var(--cian); }
+.fases-estado { font-family: var(--f-display); font-size: 12.5px; font-weight: 600; color: var(--ink-3); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.progreso-pauta { display: grid; gap: 7px; }
+.progreso-pauta .barra { height: 7px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.progreso-pauta .barra > i { display: block; height: 100%; width: 0; background: var(--cian); border-radius: 99px; transition: width .35s var(--ease); }
+
+/* apartados colapsables */
+details.sec > summary {
+  list-style: none; cursor: pointer;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px;
+}
+details.sec > summary::-webkit-details-marker { display: none; }
+details.sec > summary .sec-head { display: grid; gap: 5px; }
+details.sec > summary h2 { margin-top: 0; transition: color .2s var(--ease); }
+details.sec > summary:hover h2 { color: var(--azul-2); }
+details.sec > summary .mas {
+  width: 38px; height: 38px; flex: none; border-radius: 50%;
+  border: 1.5px solid var(--line); background: var(--surface-2); color: var(--ink-3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-display); font-size: 23px; font-weight: 400; line-height: 1;
+  transition: transform .3s var(--ease), border-color .2s var(--ease), background-color .2s var(--ease), color .2s var(--ease);
+}
+details.sec > summary:hover .mas { border-color: var(--azul-2); color: var(--azul); background: var(--surface); }
+details.sec[open] > summary .mas { transform: rotate(45deg); }
+details.sec > .sec-body { padding-top: 10px; animation: fade .32s var(--ease) both; }
+
+/* control desplegar o plegar todo */
+button.todo {
+  margin-top: 12px; width: 100%; min-height: 38px; padding: 0 14px;
+  background: var(--surface); border: 1.5px dashed var(--line); border-radius: 999px;
+  font-family: var(--f-display); font-size: 12.5px; font-weight: 600; color: var(--ink-2);
+  cursor: pointer; transition: border-color .2s var(--ease), color .2s var(--ease);
+}
+button.todo:hover { border-color: var(--azul-2); color: var(--azul); }
+
+/* menú lateral */
+.layout-principal {
+  display: flex;
+  max-width: 1140px;
+  margin: 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  padding: 0 16px;
+}
+.layout-principal .sheet { flex: 1; max-width: 820px; margin: 0; }
+.sidebar {
+  position: sticky;
+  top: calc(28px + env(safe-area-inset-top, 0px));
+  width: 280px;
+  flex-shrink: 0;
+  display: none;
+  margin-top: 38px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+.sidebar nav.idx {
+  background: var(--surface-2);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border-bottom: 1.5px solid var(--line);
+}
+.sidebar nav.idx ol { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.sidebar nav.idx a { width: 100%; justify-content: flex-start; padding: 7px 14px; min-height: auto; font-size: 12.5px; line-height: 1.3; }
+
+@media (min-width: 768px) {
+  .sidebar { display: block; width: 220px; }
+  .menu-movil { display: none; }
+  .layout-principal { gap: 16px; padding: 0 16px; }
+}
+@media (min-width: 1080px) {
+  .sidebar { width: 280px; }
+  .layout-principal { padding: 0 24px; gap: 32px; }
+}
+</style>
+
+<div class="progreso" role="presentation"><i id="pb"></i></div>
+<button type="button" class="tema" id="tema">Modo oscuro</button>
+<button type="button" class="subir" id="subirBtn" aria-label="Volver al inicio">↑ Subir</button>
+
+<div class="franja"></div>
+
+<main class="layout-principal">
+
+  <aside class="sidebar">
+    <nav class="idx" aria-label="Contenido del documento (lateral)">
+      <p>Contenido</p>
+      <ol>
+        <li><a href="#s1">El propósito de la práctica</a></li>
+        <li><a href="#s2">El sistema de prácticas</a></li>
+        <li><a href="#s3">Los tipos de práctica</a></li>
+        <li><a href="#s4">La tríada formativa</a></li>
+        <li><a href="#s5">Lo que vive quien se forma</a></li>
+        <li><a href="#s6">Acompañar la reflexión</a></li>
+        <li><a href="#s7">Modelos y ciclos reflexivos</a></li>
+        <li><a href="#s8">El acompañamiento por preguntas</a></li>
+        <li><a href="#s9">Dispositivos de acompañamiento</a></li>
+        <li><a href="#s10">Pauta de trabajo</a></li>
+                              </ol>
+      <ul class="idx-extra">
+        <li><a href="#refs">Referencias</a></li>
+      </ul>
+      <button type="button" class="todo" data-todo>Desplegar todo</button>
+    </nav>
+  </aside>
+
+  <article class="sheet">
+
+    <header class="doc pad">
+      <p class="eyebrow">Red de Campos Pedagógicos PUCV · Programa Formativo de Mentores y Mentoras</p>
+      <h1>Orientaciones para el acompañamiento en el sistema de prácticas</h1>
+      <p class="sub">Documento de apoyo al rol de mentor y mentora en los campos pedagógicos, con foco en el acompañamiento de la reflexión pedagógica de las y los profesores en formación.</p>
+      <div class="meta">
+        <span>Proyecto ESR UCV2595</span>
+        <span>Unidad de Formación Inicial Docente</span>
+        <span>Documento de orientación</span>
+      </div>
+    </header>
+
+    <nav class="idx pad menu-movil" aria-label="Contenido del documento">
+      <p>Contenido</p>
+      <ol>
+        <li><a href="#s1">El propósito de la práctica</a></li>
+        <li><a href="#s2">El sistema de prácticas</a></li>
+        <li><a href="#s3">Los tipos de práctica</a></li>
+        <li><a href="#s4">La tríada formativa</a></li>
+        <li><a href="#s5">Lo que vive quien se forma</a></li>
+        <li><a href="#s6">Acompañar la reflexión</a></li>
+        <li><a href="#s7">Modelos y ciclos reflexivos</a></li>
+        <li><a href="#s8">El acompañamiento por preguntas</a></li>
+        <li><a href="#s9">Dispositivos</a></li>
+        <li><a href="#s10">Pauta de trabajo</a></li>
+                              </ol>
+      <ul class="idx-extra">
+        <li><a href="#refs">Referencias</a></li>
+      </ul>
+      <button type="button" class="todo" data-todo>Desplegar todo</button>
+    </nav>
+
+    <section class="pad" id="s0">
+      <details class="sec" open>
+        <summary>
+          <span class="sec-head">
+            <span class="num">Presentación</span>
+            <h2>Poner en palabras los criterios del oficio</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">Recibir a un profesor o profesora en formación compromete al establecimiento en algo más que supervisar el trabajo en el aula. Quien asume la mentoría abre su curso y, con él, los criterios con que decide, anticipa y corrige mientras enseña.</p>
+      <div class="flow">
+        <p>Esos criterios casi nunca se enuncian en voz alta: forman parte del oficio y operan sin que uno repare en ellos. Son, sin embargo, lo que el profesor o profesora en formación necesita aprender a construir, y solo se aprenden cuando alguien los pone en palabras.</p>
+        <p>Esta guía reúne lo que una mentora o un mentor necesita tener a la vista al comenzar el proceso. Para qué existe la práctica dentro del sistema de prácticas de la Universidad, cómo se organiza en sus tres niveles, qué responsabilidad asume cada integrante de la tríada formativa y cómo conducir el acompañamiento de la reflexión a lo largo del semestre.</p>
+        <p>Se articula con los programas de asignatura y los protocolos de evidencia de cada nivel, que fijan exigencias, plazos y criterios de evaluación. Aquí se desarrolla el fundamento formativo que esos instrumentos suponen, con modelos y dispositivos respaldados por la investigación sobre formación docente. Ajustarlos al curso, a la disciplina y a la trayectoria de quien llega al <span class="term" tabindex="0" data-def="Establecimiento u organización educativa donde se desarrolla la formación práctica, reconocido como co-formador. Nombra el espacio de aprendizaje profesional completo, más amplio que el aula donde ocurre la clase.">campo pedagógico</span> es parte del juicio profesional de la mentoría, y nadie está en mejor posición para ejercerlo.</p>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s1">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">01 · El propósito</span>
+            <h2>La práctica es un espacio de formación con contenido propio</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">La práctica no es la aplicación de lo aprendido en la Universidad. Es en sí misma un espacio de formación, con contenido y resultados de aprendizaje propios.</p>
+      <div class="flow">
+        <p>El Marco Conceptual para la Formación Inicial Docente de la PUCV identifica las experiencias prácticas significativas como uno de los seis criterios de una formación docente de calidad (PUCV, 2025).</p>
+      </div>
+
+      <div class="cards c3">
+        <div class="card">
+          <p class="n">Criterio 1</p>
+          <p class="t">Coherencia del programa</p>
+          <p>Articulación interna entre los propósitos declarados, el plan de estudios y las experiencias formativas que se ofrecen.</p>
+        </div>
+        <div class="card">
+          <p class="n">Criterio 2</p>
+          <p class="t">Contenidos del plan de estudios</p>
+          <p>Saberes disciplinares, pedagógicos y didácticos que la formación debe asegurar.</p>
+        </div>
+        <div class="card">
+          <p class="n">Criterio 3</p>
+          <p class="t">Métodos de enseñanza eficaces</p>
+          <p>Estrategias formativas con evidencia de efectividad en la preparación de profesores.</p>
+        </div>
+        <div class="card">
+          <p class="n">Criterio 4</p>
+          <p class="t">Experiencias prácticas significativas</p>
+          <p>El criterio donde se sitúa el trabajo de la mentoría en el campo pedagógico.</p>
+        </div>
+        <div class="card">
+          <p class="n">Criterio 5</p>
+          <p class="t">Selección y apoyo a estudiantes</p>
+          <p>Mecanismos de ingreso y de acompañamiento de quienes se forman como profesores.</p>
+        </div>
+        <div class="card">
+          <p class="n">Criterio 6</p>
+          <p class="t">Selección y apoyo a formadores</p>
+          <p>Mecanismos equivalentes para quienes forman, en la Universidad y en la escuela.</p>
+        </div>
+      </div>
+
+      <h3>Qué distingue una experiencia práctica de calidad</h3>
+      <div class="flow">
+        <p>La evidencia internacional que el Marco recoge asocia las experiencias prácticas de alta calidad con mayor retención profesional, mayor autoeficacia y mejor desempeño docente (Ronfeldt, 2021). Lo que las distingue es que el centro de práctica opere como espacio formativo, con docentes que acompañan de manera sostenida, y que lo ocurrido en la escuela dialogue con la formación teórica recibida en la Universidad (Cofré et al., 2022; Ronfeldt, 2021). De ahí que la calidad del acompañamiento sea una variable formativa de primer orden.</p>
+      </div>
+
+      <h3>Dónde poner la atención</h3>
+      <div class="flow">
+        <p>El Marco Conceptual fija además el foco de la formación práctica: dirigir la atención al desempeño de los estudiantes del curso antes que al del propio profesor o profesora en formación (Windschitl y Stroupe, 2017, citados en PUCV, 2025).</p>
+      </div>
+      <div class="destacado">
+        <p class="lab">La pregunta que organiza el acompañamiento</p>
+        <span class="cita">¿Qué aprendieron los estudiantes y qué decisiones pedagógicas lo hicieron posible o lo dificultaron?</span>
+        <p>El modelo de formación articula conocimientos, habilidades y disposiciones de manera simultánea y no jerárquica, y sitúa la reflexión ética sobre la práctica profesional donde se cruzan los tres núcleos de conocimiento profesional, el didáctico-disciplinar, el pedagógico y psicológico sobre enseñanza y aprendizaje, y el del contexto (PUCV, 2025). Acompañar la reflexión es trabajar en el centro del modelo formativo institucional.</p>
+      </div>
+
+      <div class="destacado idea">
+        <p class="lab">Idea fuerza</p>
+        <p>Todo saber docente se activa, se resignifica y se tensiona en la acción concreta, situada y moralmente implicada del aula (PUCV, 2025). El campo pedagógico es el único lugar donde esa tensión ocurre, y la mentora o el mentor es quien la vuelve visible.</p>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s2">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">02 · El sistema de prácticas</span>
+            <h2>Qué compone el sistema</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">El sistema de prácticas articula tres niveles a lo largo de la trayectoria formativa, los campos pedagógicos vinculados a la Universidad mediante convenios, una estructura de actores con funciones definidas y un soporte documental y digital común.</p>
+
+      <div class="cards c2">
+        <div class="card">
+          <p class="n">Progresión</p>
+          <p class="t">El eje de práctica</p>
+          <p>Organiza la progresión de los tres niveles, desde la aproximación inicial al aula hasta la asunción plena de responsabilidades docentes. Cada nivel se articula con asignaturas concurrentes, para que los saberes pedagógicos, didácticos y evaluativos se integren en contextos reales de enseñanza. La Práctica Docente Inicial es el primer <span class="term" tabindex="0" data-def="Instancia en que la práctica se articula con asignaturas concurrentes, de modo que los saberes pedagógicos, didácticos y evaluativos se integren en contextos reales de enseñanza.">Espacio de Concurrencia</span> de la formación, articulada con Educación para la diversidad e inclusión.</p>
+        </div>
+        <div class="card">
+          <p class="n">Territorio</p>
+          <p class="t">Los campos pedagógicos</p>
+          <p>Establecimientos y organizaciones educativas donde se desarrolla la formación práctica. La unidad de práctica mantiene el catastro de campos disponibles, propicia convenios con el sistema escolar, gestiona instancias de actualización y formación para los mentores y socializa el modelo de práctica de la PUCV con los equipos directivos.</p>
+        </div>
+        <div class="card">
+          <p class="n">Articulación</p>
+          <p class="t">La coordinación de práctica</p>
+          <p>Cada unidad académica asigna tutores, acuerda con los equipos directivos la disposición de mentoras y mentores del período y fija los momentos de las tríadas formativas. También le corresponde conocer las políticas del campo pedagógico en organización de cursos, esquema de clases e instrumentos de planificación y evaluación, además de sus rutinas, horarios y celebraciones.</p>
+        </div>
+        <div class="card">
+          <p class="n">Soporte</p>
+          <p class="t">Los protocolos de evidencia</p>
+          <p>Definen, en cada nivel, qué debe producir el profesor o profesora en formación, con qué criterios se evalúa y qué rol cumple cada actor: Contextualización para el Aprendizaje de los Estudiantes, Planificación y Evaluación de Aprendizajes, Implementación de la Enseñanza, Reflexión sobre la Toma de Decisiones de la Enseñanza, Autoevaluación y Coevaluación. La plataforma <span class="term" tabindex="0" data-def="Plataforma institucional de la PUCV que soporta la entrega de evidencias y el seguimiento de los procesos de práctica.">SEPRAD</span> soporta la entrega de evidencias y el seguimiento.</p>
+        </div>
+      </div>
+
+      <div class="destacado mentoria">
+        <p class="lab">Qué significa esto para la mentoría</p>
+        <p>El protocolo de implementación de la enseñanza es aplicado por la mentora o el mentor y valora aspectos formales, pedagógicos, relacionales y profesionales del desempeño en el campo pedagógico. En la Práctica Intermedia II, los desempeños observados por la mentoría concentran la ponderación más alta del nivel.</p>
+        <p>La mirada de quien acompaña en la escuela no es complementaria a la evaluación universitaria, forma parte de ella.</p>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s3">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">03 · Los tipos de práctica</span>
+            <h2>La responsabilidad se amplía por niveles</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">Los tres niveles se diferencian por el foco formativo, por el grado de responsabilidad docente que asume el profesor o profesora en formación y por la forma de organización del trabajo en el aula. Saber en qué nivel se encuentra quien llega al campo pedagógico define qué es razonable pedirle.</p>
+
+      <div class="flip-grid">
+        <div class="scene" tabindex="0" role="button" aria-label="Práctica Docente Inicial. Activa para ver el detalle del nivel.">
+          <div class="c-flip">
+            <div class="face face-front">
+              <span class="etapa-num">1</span>
+              <p class="t">Práctica Docente Inicial</p>
+              <p class="horas">5 horas pedagógicas semanales</p>
+              <p class="click-hint">Girar tarjeta ⤾</p>
+            </div>
+            <div class="face face-back">
+              <p class="n">Nivel 1</p>
+              <p class="t">Práctica Docente Inicial</p>
+              <p>Comprender cómo aprenden los estudiantes del sistema escolar, considerando factores sociales, cognitivos, emocionales y motivacionales. Se organiza en grupos de cuatro a seis integrantes, y cada uno acompaña a un subgrupo de estudiantes del curso asignado, en actividades planificadas por la mentoría. Talleres quincenales en la Universidad.</p>
+            </div>
+          </div>
+        </div>
+        <div class="scene" tabindex="0" role="button" aria-label="Práctica Docente Intermedia II. Activa para ver el detalle del nivel.">
+          <div class="c-flip">
+            <div class="face face-front">
+              <span class="etapa-num">2</span>
+              <p class="t">Práctica Docente Intermedia II</p>
+              <p class="horas">9 horas pedagógicas semanales</p>
+              <p class="click-hint">Girar tarjeta ⤾</p>
+            </div>
+            <div class="face face-back">
+              <p class="n">Nivel 2</p>
+              <p class="t">Práctica Docente Intermedia II</p>
+              <p>Integrar competencias pedagógicas, didácticas y evaluativas, y desarrollar la reflexión en la acción y sobre la acción a partir de evidencias. Se trabaja en duplas que planifican, implementan y evalúan de manera colaborativa, y asumen la enseñanza de una unidad o subunidad didáctica acordada con mentoría y tutoría. Talleres y tutorías en la Universidad.</p>
+            </div>
+          </div>
+        </div>
+        <div class="scene" tabindex="0" role="button" aria-label="Práctica Docente Final. Activa para ver el detalle del nivel.">
+          <div class="c-flip">
+            <div class="face face-front">
+              <span class="etapa-num">3</span>
+              <p class="t">Práctica Docente Final</p>
+              <p class="horas">26 horas semanales · 18 semanas</p>
+              <p class="click-hint">Girar tarjeta ⤾</p>
+            </div>
+            <div class="face face-back">
+              <p class="n">Nivel 3</p>
+              <p class="t">Práctica Docente Final</p>
+              <p>Transitar de la formación universitaria al desempeño profesional, con reflexión crítica sustentada en evidencias sobre las propias decisiones de enseñanza. Trabajo individual, con enseñanza en uno o más cursos, codocencia con equipos psicoeducativos, participación en reuniones de departamento y otras instancias colaborativas. Talleres quincenales.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Síntesis comparada de los tres niveles</h3>
+      <div class="flow">
+        <p>Según los programas de asignatura vigentes del eje de práctica.</p>
+      </div>
+      <div class="tabla-wrap">
+        <table>
+          <thead><tr><th>Nivel</th><th>Foco formativo</th><th>Organización</th><th>Presencia</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Práctica Docente Inicial</td>
+              <td>Comprender cómo aprenden los estudiantes del sistema escolar, considerando factores sociales, cognitivos, emocionales y motivacionales.</td>
+              <td>Grupos de cuatro a seis integrantes. Cada uno acompaña a un subgrupo de estudiantes del curso asignado, en actividades planificadas por la mentoría.</td>
+              <td>5 horas pedagógicas semanales. Talleres quincenales en la Universidad.</td>
+            </tr>
+            <tr>
+              <td>Práctica Docente Intermedia II</td>
+              <td>Integrar competencias pedagógicas, didácticas y evaluativas, y desarrollar la reflexión en la acción y sobre la acción a partir de evidencias.</td>
+              <td>Duplas. Planifican, implementan y evalúan de manera colaborativa, y asumen la enseñanza de una unidad o subunidad didáctica acordada con mentoría y tutoría.</td>
+              <td>9 horas pedagógicas semanales. Talleres y tutorías en la Universidad.</td>
+            </tr>
+            <tr>
+              <td>Práctica Docente Final</td>
+              <td>Transitar de la formación universitaria al desempeño profesional, con reflexión crítica sustentada en evidencias sobre las propias decisiones de enseñanza.</td>
+              <td>Trabajo individual. Enseñanza en uno o más cursos, codocencia con equipos psicoeducativos, participación en reuniones de departamento y otras instancias colaborativas.</td>
+              <td>26 horas pedagógicas semanales durante 18 semanas. Talleres quincenales.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="destacado alerta">
+        <p class="lab">Error frecuente de ajuste</p>
+        <p>Pedir a alguien de práctica inicial que haga clases completas, o esperar que alguien de práctica final permanezca observando. El nivel define el tipo de participación esperada: en la inicial se colabora con pequeños grupos dentro de actividades planificadas por la mentoría; en la final se asume progresivamente la responsabilidad profesional completa.</p>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s4">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">04 · La tríada formativa</span>
+            <h2>El dispositivo central del acompañamiento</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">La tríada formativa se define como un espacio de diálogo entre tutor, mentor y profesor o profesora en formación, cuyo propósito es analizar las barreras y los facilitadores del aprendizaje de los estudiantes, planificar acciones pedagógicas y reflexionar sobre su impacto.</p>
+      <div class="flow">
+        <p>Su valor reside en que reúne información que ninguno de los tres participantes posee por completo, puesto que la mentoría conoce al curso y su historia, la tutoría conoce los referentes formativos y los criterios de la carrera, y el profesor o profesora en formación conoce las razones de sus propias decisiones. El cruce de esas tres miradas sobre un mismo episodio de enseñanza es lo que vuelve productiva la conversación.</p>
+        <p>La literatura nacional advierte por qué este dispositivo requiere cuidado. Cuando no se construye un vínculo efectivo entre la universidad y la escuela, la calidad de la experiencia práctica se resiente (Montecinos et al., 2015), y esa misma falta de interacción explica buena parte de las discrepancias que aparecen entre la evaluación que realizan los tutores universitarios y la que realizan los mentores escolares (Soto-Lillo y Quiroga-Lobos, 2021). La tríada existe precisamente para reducir esa distancia. El conocimiento profesional docente se construye en la relación entre los tres vértices (Bravo y Santibáñez, 2023).</p>
+        <p>Los tres vértices comparten un mismo objeto de análisis, las barreras y los facilitadores del aprendizaje de los estudiantes del curso. Ese objeto fija el contenido de la conversación y da el criterio para decidir qué merece discutirse.</p>
+      </div>
+
+      <h3>Roles de cada vértice</h3>
+      <div class="tabs" role="tablist" aria-label="Roles de la tríada formativa">
+        <button type="button" class="tab" role="tab" data-t="mentor" aria-selected="true">Mentor o mentora</button>
+        <button type="button" class="tab" role="tab" data-t="tutor" aria-selected="false">Tutor o tutora</button>
+        <button type="button" class="tab" role="tab" data-t="pf" aria-selected="false">Profesor/a en formación</button>
+      </div>
+
+      <div class="panel on" id="p-mentor">
+        <div class="rol mentor">
+          <p class="sigla">Campo pedagógico</p>
+          <h3>Mentor o mentora</h3>
+          <p>Docente del campo pedagógico que recibe al profesor o profesora en formación y acompaña su proceso en el aula.</p>
+          <ul class="orient mentor">
+            <li><span>Acuerda con la coordinación un <b>protocolo de desempeño</b> que precisa la labor que desarrollará.</span></li>
+            <li><span><b>Planifica las actividades</b> en las que el profesor o profesora en formación participa, de modo progresivo según el nivel.</span></li>
+            <li><span><b>Aplica el protocolo de implementación de la enseñanza</b>, que valora aspectos formales, pedagógicos, relacionales y profesionales.</span></li>
+            <li><span><b>Participa en las tríadas formativas</b> y sostiene la conversación reflexiva cotidiana.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" id="p-tutor">
+        <div class="rol tutor">
+          <p class="sigla">Universidad</p>
+          <h3>Tutor o tutora</h3>
+          <p>Académico de la unidad académica responsable del acompañamiento formativo desde la Universidad.</p>
+          <ul class="orient tutor">
+            <li><span><b>Conoce las políticas, rutinas y exigencias protocolares</b> del campo pedagógico antes de la incorporación.</span></li>
+            <li><span><b>Acompaña y retroalimenta</b> a partir del análisis de informes, evidencias pedagógicas y observaciones de clases, con finalidad eminentemente formativa.</span></li>
+            <li><span><b>Evalúa el trabajo desarrollado</b> y retroalimenta al equipo directivo y a la mentoría.</span></li>
+            <li><span><b>Convoca y conduce las tríadas formativas</b> junto con la mentoría.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" id="p-pf">
+        <div class="rol pf">
+          <p class="sigla">En formación</p>
+          <h3>Profesor o profesora en formación</h3>
+          <p>Estudiante de pedagogía que desarrolla su proceso formativo en el campo pedagógico.</p>
+          <ul class="orient pf">
+            <li><span><b>Conoce el proyecto educativo</b>, el manual de convivencia y las normas del establecimiento.</span></li>
+            <li><span>Actúa como <b>nexo entre tutoría y mentoría</b>.</span></li>
+            <li><span><b>Se responsabiliza de la enseñanza y el aprendizaje</b> mediante una relación fluida y de calidad con los estudiantes del curso asignado.</span></li>
+            <li><span><b>Entrega oportunamente sus informes de evidencia</b> a través de SEPRAD.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Estructura sugerida para una sesión de tríada</h3>
+      <div class="flow">
+        <p>La conversación rinde más cuando tiene una forma acordada de antemano.</p>
+      </div>
+      <div class="pasos">
+        <div class="paso">
+          <div>
+            <p class="t">Definir el episodio</p>
+            <p>Acordar qué momento de clase se analizará, idealmente elegido por el propio profesor o profesora en formación.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div>
+            <p class="t">Describir sin interpretar</p>
+            <p>Relatar lo ocurrido antes de explicarlo. La interpretación temprana cierra la conversación.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div>
+            <p class="t">Contrastar las tres lecturas</p>
+            <p>Poner en común lo que cada vértice vio, sobre las evidencias de aprendizaje disponibles.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div>
+            <p class="t">Identificar la tensión central</p>
+            <p>Nombrar la tensión pedagógica que explica el episodio, y no la lista de detalles por corregir.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div>
+            <p class="t">Cerrar con un compromiso verificable</p>
+            <p>Acordar una acción concreta para la semana siguiente. Registrarla permite retomarla en la sesión posterior y transforma la secuencia de reuniones en una trayectoria.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="destacado">
+        <p class="lab">El punto que suele fallar</p>
+        <p>La tríada no tiene por qué estar de acuerdo en todo. Lo que daña la formación es que el desacuerdo quede implícito y haya que descubrirlo por cuenta propia. Explicitar en qué discrepan la mentoría y la tutoría es parte del acompañamiento, no una falla de coordinación.</p>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s5">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">05 · Lo que vive quien se forma</span>
+            <h2>Nueve tensiones, tres familias</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">La práctica no se vive como una secuencia de tareas sino como una serie de tensiones que paralizan. Nombrarlas sirve para dos cosas: quien se forma deja de creer que le pasa solo a él, y la mentoría deja de leerlas como rasgos de carácter.</p>
+
+      <details class="acc" open>
+        <summary>Crisis interna y autoridad</summary>
+        <div class="in">
+          <ul class="orient">
+            <li><span><b>Síndrome del estudiante.</b> Cuestiona su estatus, se percibe aún como alumno y sufre invisibilización en la sala de profesores.</span></li>
+            <li><span><b>Temor a la autoridad.</b> Siente un miedo profundo respecto de la validación de su propia figura frente al grupo curso.</span></li>
+            <li><span><b>Fantasma de la incompetencia.</b> Experimenta sentimientos fuertes y repentinos de insuficiencia sobre su dominio del conocimiento específico y pedagógico.</span></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Rupturas epistémicas e institucionales</summary>
+        <div class="in">
+          <ul class="orient">
+            <li><span><b>Choque teórico.</b> Identifica discrepancias e incoherencias constantes entre sus propias teorías y la literatura formal.</span></li>
+            <li><span><b>Conflictos del saber.</b> Sufre fricciones epistemológicas y visiones encontradas con tutores universitarios, mentores escolares y directivos.</span></li>
+            <li><span><b>Contradicción cultural.</b> Se enfrenta al choque directo entre los criterios ideales de la universidad formadora y la cultura real del establecimiento.</span></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Agobio y vínculo en el aula</summary>
+        <div class="in">
+          <ul class="orient">
+            <li><span><b>Angustia temporal.</b> Preocupación asfixiante por percibir que el tiempo resulta insuficiente para cumplir con los altos estándares esperados.</span></li>
+            <li><span><b>Límite emocional.</b> Dudas profundas sobre cuál es la distancia emocional adecuada y la forma más sana de relacionarse con sus estudiantes.</span></li>
+            <li><span><b>Inseguridad curricular.</b> Poca claridad e inestabilidad frente a los marcos normativos necesarios para abordar y dominar el currículo.</span></li>
+          </ul>
+        </div>
+      </details>
+
+      <div class="destacado mentoria">
+        <p class="lab">Una pregunta para la mentoría</p>
+        <p>Conociendo estas nueve tensiones, ¿en qué medida somos hoy distintos a nuestros propios mentores? Casi todos los que acompañan hoy vivieron estas mismas nueve, y recordar cómo fueron acompañados entonces suele ser el mejor punto de partida.</p>
+      </div>
+
+      <div class="destacado">
+        <p class="lab">El tercer espacio</p>
+        <p>La práctica no ocurre del todo en la universidad ni del todo en la escuela, sino en la zona donde ambas culturas se cruzan. A ese cruce se le llama tercer espacio, y nombrarlo importa porque tiene reglas propias: ni el saber académico ni el saber del oficio escolar manda sobre el otro, y lo que se busca es ponerlos en diálogo (Zeichner, 2010).</p>
+        <p>Ese encuadre cambia qué se espera de la tríada. Las tensiones dejan de ser obstáculos que sortear y pasan a ser la materia prima del aprendizaje, y el error deja de leerse como falla.</p>
+      </div>
+      <div class="tabla-wrap">
+        <table>
+          <thead><tr><th>Dimensión</th><th>Práctica tradicional</th><th>Práctica en el <span class="term" tabindex="0" data-def="La zona donde se cruzan la cultura universitaria y la escolar, con reglas propias: ni el saber académico ni el del oficio escolar manda sobre el otro (Zeichner, 2010).">tercer espacio</span></th></tr></thead>
+          <tbody>
+            <tr><td>Dirección del conocimiento</td><td>De arriba hacia abajo. El experto instruye al novato.</td><td>Bidireccional. Ambos aprenden y reconstruyen la práctica.</td></tr>
+            <tr><td>Rol de la mentoría</td><td>Evaluador y anfitrión. Vigila el cumplimiento de las reglas.</td><td>Co-investigador de la práctica. Facilita la indagación conjunta.</td></tr>
+            <tr><td>Visión de los errores</td><td>Fracasos que deben evitarse o corregirse de inmediato.</td><td>Datos cruciales sobre el pensamiento de quien enseña.</td></tr>
+            <tr><td>Objetivo final</td><td>Supervivencia del practicante y control del aula.</td><td>Transformación de la práctica pedagógica en ambas instituciones.</td></tr>
+          </tbody>
+        </table>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s6">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">06 · Acompañar la reflexión</span>
+            <h2>Articular percepción, contexto y literatura</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">La reflexión pedagógica se define, en los propios protocolos del sistema de prácticas, como el proceso cognitivo que permite interrelacionar las percepciones del profesor o profesora en formación, el contexto en que se desempeña y la literatura especializada.</p>
+      <div class="flow">
+        <p>Reflexionar es articular tres fuentes que suelen permanecer separadas: lo que se percibió durante la clase, lo que el contexto escolar condiciona y lo que la literatura especializada ayuda a comprender.</p>
+        <p>El Marco Conceptual sitúa esta capacidad en el cruce de los conocimientos profesionales y le atribuye una dimensión ética, en la medida en que centra la preocupación y el actuar docente en los estudiantes a quienes se enseña (PUCV, 2025).</p>
+        <p>Las prácticas Intermedia y Final la especifican como reflexión en la acción y sobre la acción, distinción de Schön (1983) que ordena bien el acompañamiento. La primera ocurre durante la clase, en los ajustes hechos sobre la marcha; la segunda ocurre después y requiere evidencia, tiempo y un interlocutor.</p>
+      </div>
+
+      <h3>El estándar 11 como referente del acompañamiento</h3>
+      <div class="flow">
+        <p>La reflexión pedagógica es, además de una orientación institucional, una exigencia de la política nacional de formación docente.</p>
+      </div>
+      <div class="destacado">
+        <p class="lab">Estándar 11 · Aprendizaje profesional continuo · Dominio D</p>
+        <span class="cita">«Demuestra compromiso con su aprendizaje profesional continuo, transformando sus prácticas a través de la reflexión sistemática, la colaboración y la participación en diversas instancias de desarrollo profesional para la mejora del aprendizaje de los estudiantes.»</span>
+        <p>Estándares de la Profesión Docente, Dominio D sobre responsabilidades profesionales (CPEIP, 2021). El verbo es transformando, no reflexionando. Lo que se exige no es introspección sino capacidad de modificar lo propio.</p>
+      </div>
+
+      <div class="flow">
+        <p>Sus seis descriptores precisan los desempeños esperados durante la formación práctica y, leídos desde la mentoría, indican dónde interviene el acompañamiento.</p>
+      </div>
+      <ul class="orient descriptores">
+        <li><span><b>11.1</b> Conoce y aplica técnicas de observación y registro de las actividades de su práctica docente, apoyado por sus profesores supervisores, para informar el análisis y la reflexión sobre el impacto de su enseñanza en el aprendizaje de sus estudiantes.</span></li>
+        <li><span><b>11.2</b> Reflexiona sobre su práctica para revisar sus creencias, generar nuevos conocimientos, transformar su ejercicio docente en los centros de práctica y mejorar las oportunidades de aprendizaje que ofrece a sus estudiantes.</span></li>
+        <li><span><b>11.3</b> Autoevalúa su desempeño teniendo como referencia los Estándares de su carrera, la observación de sus pares, la retroalimentación de los profesionales que acompañan su trabajo en la práctica, sus experiencias de aula y sus propios valores profesionales.</span></li>
+        <li><span><b>11.4</b> Comprende la relevancia de la actualización y profundización permanente de sus saberes profesionales durante su ejercicio en los centros de práctica, para el logro de los aprendizajes de sus estudiantes.</span></li>
+        <li><span><b>11.5</b> Muestra disposición a innovar en sus prácticas pedagógicas en el transcurso de su formación, para enfrentar problemáticas o desafíos que requieren recurrir a nuevas comprensiones y desempeños.</span></li>
+        <li><span><b>11.6</b> Comprende la importancia del trabajo colaborativo y participa con sus pares en diversas instancias de apoyo mutuo para la mejora de sus prácticas.</span></li>
+      </ul>
+
+      <div class="destacado mentoria">
+        <p class="lab">Tres descriptores dependen del campo pedagógico</p>
+        <p>El <b>11.1</b> sitúa a quien supervisa como apoyo en la enseñanza de técnicas de observación y registro, lo que supone que la mentoría modele cómo se mira una clase y no solo la comente. El <b>11.2</b> identifica la revisión de las creencias como objeto de la reflexión, que es el nivel de profundidad que los modelos descritos más adelante permiten alcanzar. El <b>11.3</b> incorpora expresamente la retroalimentación de los profesionales que acompañan la práctica entre las fuentes de la autoevaluación, de modo que lo conversado en la tríada se vuelve insumo de los protocolos de autoevaluación de cada nivel.</p>
+      </div>
+
+      <h3>Dónde está el estándar de reflexión según la carrera</h3>
+      <div class="flow">
+        <p>El número no es el mismo en todas las carreras de la Red, así que conviene resolverlo antes de citarlo en un informe o una pauta.</p>
+      </div>
+      <div class="tabla-wrap">
+        <table>
+          <thead><tr><th>Carreras</th><th>Estándar de reflexión</th></tr></thead>
+          <tbody>
+            <tr><td>Básica, Especial, Educación Física y Salud, Artes Visuales, Música, Lenguaje, Historia, Biología, Física y Química</td><td>Estándar 11, Aprendizaje profesional continuo, Dominio D. Redacción idéntica en las diez.</td></tr>
+            <tr><td>Educación Parvularia</td><td>Estándar 9, porque su conjunto es de nueve estándares pedagógicos y no de doce.</td></tr>
+            <tr><td>Pedagogía Técnico Profesional</td><td>Estructura propia. El equivalente debe verificarse en el documento vigente de la especialidad.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>La diferencia entre retroalimentar y acompañar la reflexión</h3>
+      <div class="flow">
+        <p>Entregar retroalimentación es comunicar un juicio fundado sobre el desempeño observado. Acompañar la reflexión es formular las preguntas que permiten a otra persona construir ese juicio por sí misma. Ambas son necesarias y cumplen funciones distintas, y la dificultad práctica es que la primera es más rápida y tiende a desplazar a la segunda cuando el tiempo escasea.</p>
+      </div>
+      <div class="destacado idea">
+        <p class="lab">Regla simple</p>
+        <span class="cita">Preguntar antes de afirmar, y afirmar solo después de haber escuchado la lectura propia del profesor o profesora en formación.</span>
+      </div>
+
+      <h3>Cuatro niveles de profundidad de la reflexión</h3>
+      <div class="flow">
+        <p>No toda reflexión es del mismo tipo. La escala que usa el Diplomado distingue cuatro niveles, y sirve para ubicar en cuál está una conversación antes de intentar llevarla a otro.</p>
+      </div>
+      <div class="niveles">
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">1</span><span class="t">Pre-reflexión</span></div></summary>
+          <div class="in">
+            <p>Reacciona automáticamente y atribuye lo ocurrido a las circunstancias. Opera en modo supervivencia, sin cuestionar sus propias respuestas.</p>
+            <div class="niv-ejemplo"><b>Ejemplo de discurso:</b> «Los estudiantes estaban insoportables hoy, no se pudo hacer nada». El foco está puesto por completo en las circunstancias externas.</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">2</span><span class="t">Reflexión superficial</span></div></summary>
+          <div class="in">
+            <p>Se enfoca en tácticas y eficiencia. Adapta a corto plazo desde la experiencia pasada y se pregunta qué funciona.</p>
+            <div class="niv-ejemplo"><b>Ejemplo de discurso:</b> «La actividad fue muy larga y se aburrieron. Mañana haré la guía más corta». Resuelve el síntoma táctico, pero no evalúa la raíz pedagógica.</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">3</span><span class="t">Reflexión pedagógica</span></div></summary>
+          <div class="in">
+            <p>Aplica teoría e investigación y busca la mejora continua dentro de un marco educativo más amplio. Relaciona acción con aprendizaje.</p>
+            <div class="niv-ejemplo"><b>Ejemplo de discurso:</b> «La instrucción fue confusa porque asumí que conocían el concepto previo. Necesito diseñar un andamiaje para la próxima clase».</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">4</span><span class="t">Reflexión crítica</span></div></summary>
+          <div class="in">
+            <p>Indaga lo ético y lo social, cuestiona creencias personales y sesgos culturales, y promueve la justicia social.</p>
+            <div class="niv-ejemplo"><b>Ejemplo de discurso:</b> «Los textos que elegí asumen un contexto cultural que no todos tienen. Al evaluarlos así, estoy reproduciendo una brecha de origen».</div>
+          </div>
+        </details>
+      </div>
+
+      <h3>Hasta dónde llega la conversación</h3>
+      <div class="flow">
+        <p>Los protocolos de Contextualización para el Aprendizaje de los Estudiantes recomiendan revisar el modelo de Korthagen (2010), en particular las preguntas asociadas a la identidad y la misión, cuando el propósito es analizar el desarrollo de la identidad docente. La indicación sirve para graduar la profundidad, porque distingue cuándo se trabaja sobre el entorno y la conducta observable y cuándo sobre las creencias y la identidad profesional de quien enseña (Korthagen y Vasalos, 2005).</p>
+      </div>
+      <div class="niveles">
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">1</span><span class="t">Entorno</span></div></summary>
+          <div class="in">
+            <p>Lo que ocurre afuera, el curso, el horario, los materiales, las condiciones del establecimiento.</p>
+            <div class="niv-ejemplo"><b>Pregunta que abre la capa:</b> ¿con qué te encontraste en la sala cuando llegaste?</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">2</span><span class="t">Conducta</span></div></summary>
+          <div class="in">
+            <p>Lo que la persona hizo, observable y describible por un tercero.</p>
+            <div class="niv-ejemplo"><b>Pregunta que abre la capa:</b> ¿qué hiciste en ese momento, paso por paso?</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">3</span><span class="t">Competencias</span></div></summary>
+          <div class="in">
+            <p>Lo que sabe hacer, el repertorio didáctico disponible en ese momento.</p>
+            <div class="niv-ejemplo"><b>Pregunta que abre la capa:</b> ¿qué recursos tenías a mano para responder a eso?</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">4</span><span class="t">Creencias</span></div></summary>
+          <div class="in">
+            <p>Lo que supone sobre cómo se aprende y sobre lo que es posible en ese curso. Es la capa que el descriptor 11.2 señala como objeto de la reflexión.</p>
+            <div class="niv-ejemplo"><b>Pregunta que abre la capa:</b> ¿qué estabas dando por supuesto sobre lo que ese grupo podía hacer?</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">5</span><span class="t">Identidad</span></div></summary>
+          <div class="in">
+            <p>El tipo de profesor o profesora que quiere ser, y la distancia entre eso y lo que la clase le devolvió.</p>
+            <div class="niv-ejemplo"><b>Pregunta que abre la capa:</b> ¿qué clase de profesora querías ser en esa clase?</div>
+          </div>
+        </details>
+        <details class="acc niv-acc">
+          <summary><div class="niv-header"><span class="k">6</span><span class="t">Misión</span></div></summary>
+          <div class="in">
+            <p>Para qué enseña, el sentido que le da al trabajo con estos estudiantes y no con otros.</p>
+            <div class="niv-ejemplo"><b>Pregunta que abre la capa:</b> ¿qué te hizo entrar a pedagogía y qué de eso apareció hoy?</div>
+          </div>
+        </details>
+      </div>
+      <p class="nota">Las capas no se recorren todas en cada conversación. El acuerdo útil es saber en cuál se está trabajando, porque una pregunta de identidad formulada en la segunda semana se responde con lo que se cree que se espera escuchar.</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s7">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">07 · Modelos y ciclos</span>
+            <h2>Una secuencia para que la conversación no se detenga</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">Un modelo reflexivo aporta una secuencia de etapas con preguntas asociadas a cada una, lo que evita que la conversación se detenga en la descripción o salte directamente a las soluciones.</p>
+      <div class="flow">
+        <p>Dos modelos sirven bien en los campos pedagógicos, ALACT y el ciclo de Gibbs. Ambos integran experiencia, reflexión y acción, por lo que la elección depende de quien se forma y del contexto, y no de la familiaridad previa de quien acompaña.</p>
+        <p>El ciclo se elige según el suceso que se quiera analizar, y conviene justificar por qué ese y no el otro. No se ofrecen los dos a la vez.</p>
+      </div>
+
+      <div class="tabs ciclos-tabs" role="tablist" aria-label="Modelos reflexivos">
+        <button type="button" class="tab c-tab" data-t="c-alact" aria-selected="true">ALACT</button>
+        <button type="button" class="tab c-tab" data-t="c-gibbs" aria-selected="false">Gibbs</button>
+      </div>
+
+      <div class="ciclos-paneles">
+        <div class="ciclo-card on" id="c-alact">
+          <h4>Modelo ALACT</h4>
+          <p class="fuente">Korthagen (2010); Korthagen y Vasalos (2005). Recomendado por los protocolos del sistema de prácticas.</p>
+          <p>Ideal para el acompañamiento sostenido de un episodio hasta volver a probarlo. Centrado en la iteración práctica constante del aula, y compatible con las capas de profundidad de la sección anterior.</p>
+          <div class="cycle-wrapper">
+            <div class="cycle-flow" aria-label="Fases del modelo ALACT">
+              <button type="button" class="cycle-node on" data-desc="La experiencia concreta de enseñanza en el aula. Aquí ocurre el suceso que desencadena la reflexión.">Acción</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Descripción y análisis del episodio, buscando ser objetivo. Qué pensaba, qué sentía y qué querían los estudiantes.">Mirar atrás</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Identificación de la tensión esencial, es decir, la brecha entre lo que se quería lograr y lo que realmente pasó.">Toma de conciencia</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Creación de nuevas estrategias o soluciones posibles para abordar la misma situación, con apoyo del marco teórico disponible.">Crear alternativas</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Implementación de las alternativas en la siguiente oportunidad pedagógica, lo que reinicia el ciclo.">Ensayo</button>
+            </div>
+            <div class="cycle-detail" aria-live="polite">
+              <h5>Acción</h5>
+              <p>La experiencia concreta de enseñanza en el aula. Aquí ocurre el suceso que desencadena la reflexión.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ciclo-card" id="c-gibbs">
+          <h4>Ciclo de Gibbs</h4>
+          <p class="fuente">Gibbs (1988). Recomendado por los protocolos del sistema de prácticas.</p>
+          <p>Se utiliza cuando la emoción es parte central del asunto y no un ruido que haya que descartar. Ayuda a procesar frustraciones o momentos de alta intensidad sin quedarse en ellos.</p>
+          <div class="cycle-wrapper">
+            <div class="cycle-flow" aria-label="Fases del ciclo de Gibbs">
+              <button type="button" class="cycle-node on" data-desc="Qué ocurrió. Relato detallado de los hechos sin añadir juicios de valor o interpretaciones.">Descripción</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Cómo me sentí y por qué, antes, durante y después del suceso.">Sentimientos</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Qué funcionó y qué no. Primer juicio de valor acerca del evento.">Evaluación</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Por qué resultaron así las cosas. Fase para conectar el episodio con la teoría y con las evidencias de aprendizaje.">Análisis</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Qué aprendí sobre mí y sobre mis estudiantes, y qué más podría haber hecho en esa situación.">Conclusión</button>
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+              <button type="button" class="cycle-node" data-desc="Qué haré distinto la próxima vez, formulado como compromiso concreto y verificable.">Plan de acción</button>
+            </div>
+            <div class="cycle-detail" aria-live="polite">
+              <h5>Descripción</h5>
+              <p>Qué ocurrió. Relato detallado de los hechos sin añadir juicios de valor o interpretaciones.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Una progresión, no una repetición</h3>
+      <div class="flow">
+        <p>Las mismas preguntas semana tras semana producen respuestas cada vez más formales y menos reflexivas. La profundidad se gradúa a lo largo del semestre.</p>
+      </div>
+      <div class="cards c3">
+        <div class="card">
+          <p class="n">Primeras semanas</p>
+          <p class="t">Describir y percibir</p>
+          <p>Preguntas de descripción y de percepción, orientadas a construir confianza y a instalar el hábito de mirar.</p>
+        </div>
+        <div class="card">
+          <p class="n">Semanas intermedias</p>
+          <p class="t">Analizar y contrastar</p>
+          <p>Análisis de las causas, contraste con evidencias de aprendizaje y vinculación con referentes didácticos y curriculares.</p>
+        </div>
+        <div class="card">
+          <p class="n">Últimas semanas</p>
+          <p class="t">Transferir</p>
+          <p>Qué de lo aprendido en este curso y con estos estudiantes resulta generalizable a otros contextos, y qué no.</p>
+        </div>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s8">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">08 · El acompañamiento por preguntas</span>
+            <h2>La pregunta es el instrumento de la mentoría reflexiva</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">A diferencia del comentario evaluativo, que entrega una conclusión ya elaborada, la pregunta obliga a quien la recibe a producir su propio razonamiento, que es la capacidad que la práctica busca desarrollar.</p>
+      <div class="flow">
+        <p>Una mentora o un mentor con experiencia suele saber de antemano qué ocurrió en la clase y por qué. Lo difícil está en no decirlo, y en construir el camino para que quien se forma llegue a esa comprensión, o a una distinta y mejor fundada.</p>
+      </div>
+
+      <h3>Qué caracteriza a una buena pregunta de acompañamiento</h3>
+      <ul class="orient">
+        <li><span><b>Es abierta.</b> No se responde con un sí o un no.</span></li>
+        <li><span><b>No lleva la respuesta incorporada.</b> No es un juicio disfrazado de interrogación.</span></li>
+        <li><span><b>Se refiere a un momento concreto y observable</b> de la clase, y no a impresiones generales sobre el desempeño.</span></li>
+        <li><span><b>Se formula de a una y va seguida de silencio</b>, porque el tiempo que transcurre antes de la respuesta suele ser el momento en que efectivamente se está pensando.</span></li>
+        <li><span><b>Admite como respuesta un no lo sé</b>, que suele ser el mejor punto de partida para indagar juntos.</span></li>
+      </ul>
+
+      <h3>Cinco funciones de la pregunta en la conversación reflexiva</h3>
+      <div class="flow">
+        <p>Las preguntas cumplen funciones distintas, y una conversación que se queda en una sola se agota. El orden en que se presentan suele ser también un orden productivo dentro de una misma sesión.</p>
+      </div>
+
+      <details class="acc" open>
+        <summary>1 · Describir</summary>
+        <div class="in">
+          <p>Anclan la conversación en lo que efectivamente ocurrió, antes de cualquier interpretación. Útiles al comenzar, porque evitan el salto inmediato al juicio sobre sí mismo.</p>
+          <ul class="preguntas">
+            <li>¿Qué estaban haciendo los estudiantes en el momento en que decidiste intervenir?</li>
+            <li>Cuéntame qué pasó entre la consigna y el inicio del trabajo en grupos.</li>
+            <li>¿Qué fue lo primero que notaste al entrar a la sala hoy?</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>2 · Explorar la percepción y la experiencia</summary>
+        <div class="in">
+          <p>Indagan cómo vivió la situación quien enseñó. La incomodidad o el entusiasmo ante un episodio señalan dónde están las creencias sobre la enseñanza y, con ellas, el lugar donde la reflexión rinde.</p>
+          <ul class="preguntas">
+            <li>¿En qué momento de la clase te sentiste más seguro y en cuál menos?</li>
+            <li>¿Qué esperabas que ocurriera cuando planificaste esa actividad?</li>
+            <li>¿Qué te llamó la atención de la reacción del curso?</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>3 · Buscar evidencia</summary>
+        <div class="in">
+          <p>Desplazan la conversación desde la impresión hacia el dato. Son las preguntas que vinculan el acompañamiento con el aprendizaje de los estudiantes, que es el foco que la Universidad establece para la formación práctica.</p>
+          <ul class="preguntas">
+            <li>¿Qué te permite afirmar que comprendieron esa idea?</li>
+            <li>Si miramos las respuestas que entregaron, ¿qué ves en las de quienes no participaron?</li>
+            <li>¿Qué habrías necesitado recoger durante la clase para responder esa pregunta con más certeza?</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>4 · Analizar causas y alternativas</summary>
+        <div class="in">
+          <p>Trabajan la relación entre las decisiones pedagógicas y sus efectos, y abren el abanico de lo que podría haberse hecho. Funcionan mejor una vez que la descripción y la evidencia están sobre la mesa.</p>
+          <ul class="preguntas">
+            <li>¿Qué explicaría que ese grupo avanzara más lento que el resto?</li>
+            <li>¿Qué otra forma de presentar ese contenido se te ocurre ahora que no se te ocurrió al planificar?</li>
+            <li>Si tuvieras que elegir un solo cambio para la próxima clase, ¿cuál sería y por qué ese?</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>5 · Proyectar y transferir</summary>
+        <div class="in">
+          <p>Cierran el ciclo y preparan el siguiente. Distinguen lo que es propio de este curso y este contenido de lo que constituye un aprendizaje profesional generalizable.</p>
+          <ul class="preguntas">
+            <li>¿Qué de lo que aprendiste hoy te sirve con otro curso y qué no?</li>
+            <li>¿En qué vas a fijarte la próxima vez que implementes una actividad como esta?</li>
+            <li>¿Qué te gustaría que yo observara específicamente en tu próxima clase?</li>
+          </ul>
+        </div>
+      </details>
+
+      <h3>Las quince preguntas, reunidas</h3>
+      <div class="flow">
+        <p>Las mismas preguntas de arriba, para abrir durante la conversación y no antes. Se filtran por la función que cumplen y por el momento del semestre en que rinden. Al tocar una, se copia.</p>
+      </div>
+      <div class="buscador">
+        <p class="f-lab">Función</p>
+        <div class="chips" data-grupo="fn">
+          <button type="button" class="chip on" data-v="">Todas</button>
+          <button type="button" class="chip" data-v="describir">Describir</button>
+          <button type="button" class="chip" data-v="percepcion">Percepción</button>
+          <button type="button" class="chip" data-v="evidencia">Evidencia</button>
+          <button type="button" class="chip" data-v="causas">Causas</button>
+          <button type="button" class="chip" data-v="transferir">Transferir</button>
+        </div>
+        <p class="f-lab">Momento del semestre</p>
+        <div class="chips" data-grupo="mom">
+          <button type="button" class="chip on" data-v="">Todo el semestre</button>
+          <button type="button" class="chip" data-v="primeras">Primeras semanas</button>
+          <button type="button" class="chip" data-v="intermedias">Intermedias</button>
+          <button type="button" class="chip" data-v="ultimas">Últimas</button>
+        </div>
+        <p class="cuenta-preg" id="cuentaPreg" aria-live="polite">15 de 15 preguntas</p>
+        <ul class="preguntas lista-preg" id="listaPreg">
+          <li data-fn="describir" data-mom="primeras intermedias" tabindex="0"><span class="p-txt">¿Qué estaban haciendo los estudiantes en el momento en que decidiste intervenir?</span><span class="p-fn">Describir</span></li>
+          <li data-fn="describir" data-mom="primeras" tabindex="0"><span class="p-txt">Cuéntame qué pasó entre la consigna y el inicio del trabajo en grupos.</span><span class="p-fn">Describir</span></li>
+          <li data-fn="describir" data-mom="primeras" tabindex="0"><span class="p-txt">¿Qué fue lo primero que notaste al entrar a la sala hoy?</span><span class="p-fn">Describir</span></li>
+          <li data-fn="percepcion" data-mom="primeras" tabindex="0"><span class="p-txt">¿En qué momento de la clase te sentiste más seguro y en cuál menos?</span><span class="p-fn">Percepción</span></li>
+          <li data-fn="percepcion" data-mom="primeras intermedias" tabindex="0"><span class="p-txt">¿Qué esperabas que ocurriera cuando planificaste esa actividad?</span><span class="p-fn">Percepción</span></li>
+          <li data-fn="percepcion" data-mom="primeras" tabindex="0"><span class="p-txt">¿Qué te llamó la atención de la reacción del curso?</span><span class="p-fn">Percepción</span></li>
+          <li data-fn="evidencia" data-mom="intermedias ultimas" tabindex="0"><span class="p-txt">¿Qué te permite afirmar que comprendieron esa idea?</span><span class="p-fn">Evidencia</span></li>
+          <li data-fn="evidencia" data-mom="intermedias" tabindex="0"><span class="p-txt">Si miramos las respuestas que entregaron, ¿qué ves en las de quienes no participaron?</span><span class="p-fn">Evidencia</span></li>
+          <li data-fn="evidencia" data-mom="intermedias ultimas" tabindex="0"><span class="p-txt">¿Qué habrías necesitado recoger durante la clase para responder esa pregunta con más certeza?</span><span class="p-fn">Evidencia</span></li>
+          <li data-fn="causas" data-mom="intermedias" tabindex="0"><span class="p-txt">¿Qué explicaría que ese grupo avanzara más lento que el resto?</span><span class="p-fn">Causas</span></li>
+          <li data-fn="causas" data-mom="intermedias" tabindex="0"><span class="p-txt">¿Qué otra forma de presentar ese contenido se te ocurre ahora que no se te ocurrió al planificar?</span><span class="p-fn">Causas</span></li>
+          <li data-fn="causas" data-mom="intermedias ultimas" tabindex="0"><span class="p-txt">Si tuvieras que elegir un solo cambio para la próxima clase, ¿cuál sería y por qué ese?</span><span class="p-fn">Causas</span></li>
+          <li data-fn="transferir" data-mom="ultimas" tabindex="0"><span class="p-txt">¿Qué de lo que aprendiste hoy te sirve con otro curso y qué no?</span><span class="p-fn">Transferir</span></li>
+          <li data-fn="transferir" data-mom="intermedias ultimas" tabindex="0"><span class="p-txt">¿En qué vas a fijarte la próxima vez que implementes una actividad como esta?</span><span class="p-fn">Transferir</span></li>
+          <li data-fn="transferir" data-mom="primeras ultimas" tabindex="0"><span class="p-txt">¿Qué te gustaría que yo observara específicamente en tu próxima clase?</span><span class="p-fn">Transferir</span></li>
+        </ul>
+        <p class="sin-resultado" id="sinPreg" hidden>Ninguna pregunta de esa función rinde en ese momento del semestre. Es un dato en sí mismo: las preguntas de descripción pierden filo al cierre, y las de transferencia no tienen de qué agarrarse al comienzo.</p>
+      </div>
+
+      <h3>La escalera de la pregunta</h3>
+      <div class="flow">
+        <p>Una misma clase produce conversaciones muy distintas según con qué se abra.</p>
+      </div>
+
+      <div class="upg-container" aria-live="polite">
+        <div class="upg-meta" id="upgMeta">Nivel 1 · Conviene evitarla</div>
+        <div class="upg-q" id="upgQ">«¿Cómo te sentiste en la clase de hoy?»</div>
+        <div class="upg-reason" id="upgReason">Cerrada y descriptiva. Se responde con una palabra y no abre nada.</div>
+        <button type="button" class="upg-btn" id="upgBtn">Subir de nivel ⬆️</button>
+        <div class="upg-dots">
+          <span class="upg-dot active"></span>
+          <span class="upg-dot"></span>
+          <span class="upg-dot"></span>
+        </div>
+      </div>
+
+      <h3>Preguntas que conviene evitar</h3>
+      <div class="flow">
+        <p>Algunas formulaciones tienen apariencia de pregunta pero operan como juicio, y quien las recibe lo advierte de inmediato: responde lo que cree que se espera de él, y la conversación pierde su valor formativo.</p>
+      </div>
+      <ul class="orient evitar">
+        <li><span><b>La pregunta retórica que contiene su propia respuesta,</b> del tipo «¿no crees que habría sido mejor dividir el curso en grupos más pequeños?». Si esa es la observación, conviene enunciarla como observación y después preguntar qué opina al respecto.</span></li>
+        <li><span><b>La pregunta encadenada,</b> en que se formulan tres interrogantes seguidas sin dar espacio. Quien responde se queda con la última y las dos primeras se pierden.</span></li>
+        <li><span><b>La pregunta de verificación de cumplimiento,</b> del tipo «¿alcanzaste a terminar la planificación?». Es legítima y necesaria, pero pertenece a la coordinación del trabajo y no a la conversación reflexiva, y mezclarlas convierte el espacio en una revisión de tareas.</span></li>
+        <li><span><b>La pregunta sobre la persona en lugar de sobre la práctica,</b> del tipo «¿por qué eres tan impaciente con ese grupo?». Desplaza el análisis hacia el carácter, donde no hay nada que decidir, en vez de hacia la decisión pedagógica, donde sí lo hay.</span></li>
+      </ul>
+
+      <div class="destacado alerta">
+        <p class="lab">Una advertencia sobre el silencio</p>
+        <p>La dificultad no está en formular las preguntas, sino en sostener la pausa que viene después. Entre tres y cinco segundos de espera cambian la calidad de la respuesta, y se hacen largos para quien pregunta. Cuando el silencio se prolonga sin respuesta, conviene reformular la misma pregunta en términos más concretos antes que responderla uno mismo: responderla enseña que basta con esperar para que la mentoría resuelva.</p>
+      </div>
+
+      <h3>Dos caminos frente al mismo error</h3>
+      <div class="flow">
+        <p>Dos reacciones posibles ante un mismo suceso, y lo que cada una deja instalado.</p>
+      </div>
+
+      <div class="sc-container">
+        <div class="sc-header" role="tablist" aria-label="Escenarios de acompañamiento">
+          <button type="button" class="sc-tab on" role="tab" aria-selected="true" data-target="sc1">Escenario 1 · El desorden</button>
+          <button type="button" class="sc-tab" role="tab" aria-selected="false" data-target="sc2">Escenario 2 · El tiempo</button>
+        </div>
+
+        <div class="sc-body on" id="sc1">
+          <p class="sc-sit"><b>El suceso:</b> el profesor en formación plantea una instrucción confusa para una actividad grupal y el curso comienza a desordenarse rápidamente sin saber qué hacer.</p>
+          <div class="sc-opts">
+            <button type="button" class="sc-btn" data-path="dir"><span class="icon">✋</span> <span>Intervenir, pedir silencio al curso y dar la instrucción correcta usted mismo para salvar la actividad.</span></button>
+            <button type="button" class="sc-btn" data-path="ref"><span class="icon">🤔</span> <span>Dejar que intente resolverlo y, en la conversación posterior, preguntar qué cree que generó el desorden al dar la instrucción.</span></button>
+          </div>
+          <div class="sc-feedback dir-feed">
+            <b>Camino directivo: obedece.</b> Agradece el salvavidas, pero internaliza que el control del grupo lo tiene la mentoría. Corrige el momento, y la próxima vez volverá a esperar ese rescate frente a un error.
+          </div>
+          <div class="sc-feedback ref-feed">
+            <b>Camino reflexivo: construye.</b> Experimenta la tensión, pero al reflexionar descubre que su instrucción fue ambigua o demasiado larga. Desarrolla criterio propio y autonomía para la clase siguiente.
+          </div>
+        </div>
+
+        <div class="sc-body" id="sc2">
+          <p class="sc-sit"><b>El suceso:</b> el profesor en formación planificó una actividad, pero los estudiantes terminaron quince minutos antes de lo esperado, y queda un vacío incómodo de tiempo al final de la clase.</p>
+          <div class="sc-opts">
+            <button type="button" class="sc-btn" data-path="dir"><span class="icon">📋</span> <span>Indicarle que para la próxima clase traiga siempre una guía extra de ejercicios por si le sobra tiempo.</span></button>
+            <button type="button" class="sc-btn" data-path="ref"><span class="icon">🔍</span> <span>Preguntarle qué ve en el desempeño del curso que explique que terminaran tan rápido la actividad propuesta.</span></button>
+          </div>
+          <div class="sc-feedback dir-feed">
+            <b>Camino directivo: obedece.</b> Acata la instrucción y llevará una guía extra en el futuro, pero no evaluará si la actividad original era demasiado simple o si falló su estimación del ritmo de aprendizaje.
+          </div>
+          <div class="sc-feedback ref-feed">
+            <b>Camino reflexivo: construye.</b> Evalúa su planificación y advierte que subestimó el nivel de dominio del curso. Aprenderá a ajustar la complejidad cognitiva de sus actividades en lugar de rellenar el tiempo.
+          </div>
+        </div>
+      </div>
+
+      <h3>Cuatro posiciones desde las que se acompaña</h3>
+      <div class="flow">
+        <p>Cruzando cuánto foco pone la conversación en el pensamiento de quien se forma con cuánto pone en resolver la tarea, aparecen cuatro posiciones.</p>
+      </div>
+      <div class="mz">
+        <span class="ax v">Foco en el pensamiento</span>
+        <button type="button" class="q m-btn" data-m="filo" aria-selected="false">
+          <b>Filosofía al aire</b><span>Bajo en tarea · Alto en pensamiento</span>
+        </button>
+        <button type="button" class="q best m-btn" data-m="mentor" aria-selected="true">
+          <b>Mentoría sobresaliente</b><span>Alto en tarea · Alto en pensamiento</span>
+        </button>
+        <button type="button" class="q m-btn" data-m="impro" aria-selected="false">
+          <b>Improvisación</b><span>Bajo en tarea · Bajo en pensamiento</span>
+        </button>
+        <button type="button" class="q m-btn" data-m="trampa" aria-selected="false">
+          <b>Trampa administrativa</b><span>Alto en tarea · Bajo en pensamiento</span>
+        </button>
+        <span class="ax"></span>
+        <span class="ax">Foco de la tarea, bajo</span>
+        <span class="ax">Foco de la tarea, alto</span>
+      </div>
+
+      <div class="matriz-paneles">
+        <div class="m-panel" id="m-filo">
+          <div class="m-info-box">
+            <h4>Consecuencia: idealismo estéril</h4>
+            <p>Conversación valiosa sobre el futuro de la educación, pero sin plan de acción. Sale inspirado de la reunión y sin saber qué hacer distinto al día siguiente. Falta aterrizarla en maniobras didácticas.</p>
+          </div>
+        </div>
+        <div class="m-panel on" id="m-mentor">
+          <div class="m-info-box best">
+            <h4>Consecuencia: transformación de la práctica</h4>
+            <p>Acción rigurosa cruzada con disonancia cognitiva. Se abordan los problemas concretos, el material, los tiempos, las instrucciones, y se resuelven cuestionando los supuestos que los causaron. Se lleva estrategias claras <b>y</b> un cambio en su forma de entender el aprendizaje.</p>
+          </div>
+        </div>
+        <div class="m-panel" id="m-impro">
+          <div class="m-info-box">
+            <h4>Consecuencia: tiempo desaprovechado</h4>
+            <p>Conversación a la deriva. Ocurre cuando la tríada se junta sin haber acordado qué foco observar. Se cuentan anécdotas, se salta de un tema a otro y la reunión termina sin acuerdos para la próxima intervención.</p>
+          </div>
+        </div>
+        <div class="m-panel" id="m-trampa">
+          <div class="m-info-box">
+            <h4>Consecuencia: dependencia de instrucciones</h4>
+            <p>Muchas exigencias sin profundidad. La mentoría entrega un listado de correcciones, tono de voz, caminar por el aula, cambiar de plumón. Corrige el síntoma visible, pero al no interrogar los motivos pedagógicos no crea criterio propio y fomenta que haya que preguntar todo.</p>
+          </div>
+        </div>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s9">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">09 · Dispositivos</span>
+            <h2>Actividades de acompañamiento que se desprenden de los protocolos</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">Las siguientes actividades se desprenden de los protocolos del sistema de prácticas. Pueden combinarse y no requieren todas el mismo tiempo ni el mismo nivel de confianza.</p>
+
+      <h3>Antes de todo, qué mirar cuando se observa una clase</h3>
+      <div class="flow">
+        <p>Observar una clase completa sin foco definido produce apuntes extensos y poco útiles. La investigación sobre la mirada profesional docente sugiere acordar antes qué se observará y distinguir luego tres operaciones (van Es y Sherin, 2002).</p>
+      </div>
+      <div class="cards c3">
+        <div class="card">
+          <p class="n">Operación 1</p>
+          <p class="t">Describir</p>
+          <p>Registrar lo ocurrido en el foco acordado, sin explicarlo todavía. Durante la clase y no de memoria.</p>
+        </div>
+        <div class="card">
+          <p class="n">Operación 2</p>
+          <p class="t">Interpretar</p>
+          <p>Proponer qué explica lo registrado, con el aprendizaje de los estudiantes como referencia.</p>
+        </div>
+        <div class="card">
+          <p class="n">Operación 3</p>
+          <p class="t">Decidir cómo responder</p>
+          <p>Definir qué haría distinto en la clase siguiente, y con qué señal sabría que funcionó.</p>
+        </div>
+      </div>
+      <p class="nota">El foco puede ser las preguntas que formula quien enseña, la participación de un subgrupo o el uso del tiempo en las transiciones. Acordarlo antes permite que la conversación posterior se apoye en registros concretos y no en impresiones generales.</p>
+
+      <h3>Cinco dispositivos de acompañamiento</h3>
+      <div class="cards c2">
+        <div class="card">
+          <p class="n">Semanal · bajo costo</p>
+          <p class="t">Bitácora reflexiva semanal</p>
+          <p>Un registro breve y periódico, escrito por quien se forma, que describe un episodio de la semana y lo analiza con el modelo acordado. Unas pocas líneas sostenidas en el tiempo rinden más que un informe extenso al cierre. El diario pedagógico tiene tradición reconocida como herramienta de formación e investigación sobre la propia práctica (Monsalve y Pérez, 2012; Vain, 2003). La mentoría puede responderla con una pregunta en lugar de un comentario evaluativo: esa única pregunta sostiene el ciclo hasta la semana siguiente.</p>
+        </div>
+        <div class="card">
+          <p class="n">Dos momentos del semestre</p>
+          <p class="t">Grabación y análisis comparativo de clases</p>
+          <p>Registrar en video dos clases distantes en el tiempo, por ejemplo la segunda y la penúltima, y analizarlas con el mismo foco. Una sola observación no permite ver progresión; dos registros comparables sí. El análisis se concentra en un fragmento de cinco a diez minutos, elegido por quien se forma. Requiere acordar antes los resguardos éticos y los permisos con el equipo directivo del campo pedagógico.</p>
+        </div>
+        <div class="card">
+          <p class="n">Centrado en el aprendizaje</p>
+          <p class="t">Análisis de evidencias de aprendizaje</p>
+          <p>Llevar a la conversación producciones reales de los estudiantes, respuestas escritas, resoluciones de problemas o registros de una evaluación formativa. Desplaza el eje desde el desempeño docente hacia el aprendizaje efectivamente logrado, que es el foco que recomienda el Marco Conceptual. Los protocolos de Análisis de Aprendizaje del Estudiante y de Reflexión sobre la Toma de Decisiones de la Enseñanza se apoyan en este tipo de evidencia.</p>
+        </div>
+        <div class="card">
+          <p class="n">Para nivelar la conversación</p>
+          <p class="t">Dilema abierto en lugar de caso cerrado</p>
+          <p>Presentar una situación pedagógica real, preferentemente vivida por la propia mentoría, sin la solución incorporada, y preguntar qué habría hecho. Instala el aprendizaje situado y muestra que quien acompaña también enfrenta decisiones difíciles, lo que vuelve la relación más simétrica sin diluir las responsabilidades de cada rol.</p>
+        </div>
+        <div class="card">
+          <p class="n">Según el nivel de práctica</p>
+          <p class="t">Coplanificación y codocencia</p>
+          <p>Diseñar en conjunto una secuencia didáctica y, cuando el nivel lo permita, implementarla de manera compartida. La Práctica Intermedia II contempla la coplanificación entre duplas, y la Práctica Final incorpora la codocencia con equipos psicoeducativos. La conversación posterior a una clase coplanificada es distinta de la posterior a una clase observada, porque ambas partes tienen responsabilidad sobre el diseño.</p>
+        </div>
+      </div>
+
+      <div class="destacado mentoria">
+        <p class="lab">También la mentoría reflexiona</p>
+        <p>Acompañar a otro obliga a revisar las propias decisiones de enseñanza, y esa revisión rara vez se planifica. Reservar diez minutos semanales para registrar qué aprendió la mentoría de la conversación forma parte del dispositivo. Los planes de acompañamiento más sólidos son los que explicitan qué hará la mentora o el mentor, y no solamente qué hará quien se forma.</p>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="pad" id="s10">
+      <details class="sec">
+        <summary>
+          <span class="sec-head">
+            <span class="num">10 · Pauta de trabajo</span>
+            <h2>Foco acordado, registro y compromiso</h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <p class="intro">Una conversación de acompañamiento rinde cuando el foco se acordó antes de la clase, lo observado se registró mientras ocurría y el cierre dejó un compromiso que se puede verificar. Esta pauta sostiene esos tres momentos y deja el compromiso por escrito, que es lo que permite retomarlo a la semana siguiente y convertir una secuencia de reuniones en una trayectoria.</p>
+      <p class="nota">La pauta se adapta al nivel de práctica y al ciclo reflexivo que elijas. Lo que escribas queda guardado en este navegador y en este dispositivo, no se envía a ninguna parte y nadie más lo ve.</p>
+
+      <div class="pauta">
+        <div class="fila f2">
+          <div class="campo">
+            <label for="pf-curso">Curso y asignatura</label>
+            <input type="text" id="pf-curso" data-pf placeholder="2.º medio, Química">
+          </div>
+          <div class="campo">
+            <label for="pf-pf">Profesor o profesora en formación</label>
+            <input type="text" id="pf-pf" data-pf placeholder="Nombre">
+          </div>
+        </div>
+        <div class="fila f3">
+          <div class="campo">
+            <label for="pf-fecha">Fecha de la clase</label>
+            <input type="date" id="pf-fecha" data-pf>
+          </div>
+          <div class="campo">
+            <label for="pf-proxima">Próxima sesión de tríada</label>
+            <input type="date" id="pf-proxima" data-pf>
+          </div>
+          <div class="campo">
+            <label for="pf-nivel">Nivel de práctica</label>
+            <select id="pf-nivel" data-pf>
+              <option value="">Elige el nivel</option>
+              <option value="inicial">Práctica Docente Inicial</option>
+              <option value="intermedia">Práctica Docente Intermedia II</option>
+              <option value="final">Práctica Docente Final</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="aviso-nivel" id="pfAvisoNivel" hidden>
+          <p class="lab" id="pfNivelTitulo"></p>
+          <p id="pfNivelTexto"></p>
+        </div>
+
+        <div class="pauta-bloque antes">
+          <div class="cab">
+            <p class="m">Antes de la clase</p>
+            <p class="t">Qué vamos a mirar</p>
+          </div>
+          <div class="campo">
+            <label for="pf-foco">Foco acordado</label>
+            <p class="pista">Un solo foco, elegido con el profesor o profesora en formación. Observar sin foco produce apuntes extensos y poco útiles.</p>
+            <div class="sugeridos" id="pfSugeridos" hidden>
+              <p class="s-lab">Focos que calzan con este nivel</p>
+              <div class="chips" id="pfChipsFoco"></div>
+            </div>
+            <textarea id="pf-foco" data-pf></textarea>
+          </div>
+          <div class="campo">
+            <label for="pf-dispositivo">Dispositivo de acompañamiento</label>
+            <select id="pf-dispositivo" data-pf>
+              <option value="">Sin dispositivo específico</option>
+              <option>Bitácora reflexiva semanal</option>
+              <option>Grabación y análisis comparativo de clases</option>
+              <option>Análisis de evidencias de aprendizaje</option>
+              <option>Dilema abierto</option>
+              <option>Coplanificación o codocencia</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="pf-ciclo">Ciclo reflexivo que usaremos</label>
+            <select id="pf-ciclo" data-pf>
+              <option value="">Elige un ciclo</option>
+              <option value="alact">ALACT, para seguir un episodio hasta volver a probarlo</option>
+              <option value="gibbs">Gibbs, cuando la emoción es parte central del asunto</option>
+            </select>
+          </div>
+          <div class="fases" id="pfFases" hidden>
+            <p class="s-lab">Fases del ciclo, para ir marcando durante la conversación</p>
+            <div id="pfFasesLista"></div>
+            <p class="fases-estado" id="pfFasesEstado"></p>
+          </div>
+        </div>
+
+        <div class="pauta-bloque durante">
+          <div class="cab">
+            <p class="m">Durante la clase</p>
+            <p class="t">Lo que efectivamente ocurrió</p>
+          </div>
+          <div class="campo">
+            <label for="pf-registro">Registro sobre el foco</label>
+            <p class="pista">Describir, todavía no interpretar. Lo que se reconstruye después queda teñido por cómo terminó la hora.</p>
+            <textarea id="pf-registro" data-pf></textarea>
+          </div>
+          <div class="campo">
+            <label for="pf-evidencia">Evidencia de aprendizaje que llevaremos a la conversación</label>
+            <p class="pista">Respuestas escritas, resoluciones, registros de una evaluación formativa. Desplaza el eje desde el desempeño docente hacia lo que los estudiantes aprendieron.</p>
+            <textarea id="pf-evidencia" data-pf></textarea>
+          </div>
+        </div>
+
+        <div class="pauta-bloque despues">
+          <div class="cab">
+            <p class="m">Después de la clase</p>
+            <p class="t">La conversación y su cierre</p>
+          </div>
+          <div class="campo">
+            <label for="pf-lecturas">Dónde difieren las lecturas</label>
+            <p class="pista">Lo que uno vio y el otro no es el material más útil de la conversación.</p>
+            <textarea id="pf-lecturas" data-pf></textarea>
+          </div>
+          <div class="campo">
+            <label for="pf-tension">Tensión pedagógica central</label>
+            <p class="pista">Una sola, no la lista de detalles por corregir.</p>
+            <textarea id="pf-tension" data-pf></textarea>
+          </div>
+          <div class="campo">
+            <label for="pf-compromiso">Compromiso verificable para la semana siguiente</label>
+            <p class="pista">Concreto y comprobable. Registrarlo permite retomarlo en la sesión posterior.</p>
+            <textarea id="pf-compromiso" data-pf></textarea>
+          </div>
+          <div class="campo">
+            <label for="pf-reflexion">Nivel de reflexión que alcanzó la conversación</label>
+            <select id="pf-reflexion" data-pf>
+              <option value="">Sin estimar</option>
+              <option>1 · Pre-reflexión, atribuye lo ocurrido a las circunstancias</option>
+              <option>2 · Reflexión superficial, resuelve el síntoma táctico</option>
+              <option>3 · Reflexión pedagógica, relaciona la acción con el aprendizaje</option>
+              <option>4 · Reflexión crítica, revisa supuestos éticos y culturales</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pauta-bloque propia">
+          <div class="cab">
+            <p class="m">También la mentoría</p>
+            <p class="t">Qué me llevo yo de esta conversación</p>
+          </div>
+          <div class="campo">
+            <label for="pf-propia">Mi propio aprendizaje</label>
+            <p class="pista">Los planes de acompañamiento más sólidos explicitan qué hará la mentora o el mentor, y no solo quien se forma.</p>
+            <textarea id="pf-propia" data-pf></textarea>
+          </div>
+        </div>
+
+        <div class="progreso-pauta">
+          <div class="barra"><i id="pfBarra"></i></div>
+          <p class="estado" id="pfProgreso">Sin completar</p>
+        </div>
+
+        <div class="pauta-acciones">
+          <button type="button" class="btn" id="pfDescargar" hidden>Descargar la pauta</button>
+          <button type="button" class="btn" id="pfCopiar">Copiar la pauta</button>
+          <button type="button" class="btn sec2" id="pfVaciar">Vaciar</button>
+          <span class="estado" id="pfEstado"></span>
+        </div>
+      </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="doc pad" id="refs">
+      <details class="sec refs-acc">
+        <summary>
+          <span class="sec-head">
+            <h2>Referencias <span class="cuenta">25 fuentes</span></h2>
+          </span>
+          <span class="mas" aria-hidden="true">+</span>
+        </summary>
+        <div class="sec-body">
+      <div class="refs">
+        <p>Bravo, P., y Santibáñez, D. (2023). Conocimiento profesional docente en la tríada formativa. Un estudio de caso en Chile. <em>Revista Eureka sobre Enseñanza y Divulgación de las Ciencias, 20</em>(1), 1601. <a class="ref-link" href="https://reuredc.uca.es/index.php/eureka/article/view/8991" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Brookfield, S. D. (1995). <em>Becoming a critically reflective teacher</em>. Jossey-Bass. <a class="ref-link" href="https://scholar.google.com/scholar?q=Brookfield%2C+S.+D.+%281995%29.+Becoming+a+critically+reflective+teacher.+Jossey-Bass." target="_blank" rel="noopener noreferrer">Buscar<span aria-hidden="true"> ↗</span></a></p>
+        <p>Centro de Perfeccionamiento, Experimentación e Investigaciones Pedagógicas. (2021). <em>Estándares de la profesión docente</em>. Ministerio de Educación de Chile. <a class="ref-link" href="https://bibliotecadigital.mineduc.cl/handle/20.500.12365/14" target="_blank" rel="noopener noreferrer">Ver en Biblioteca Mineduc<span aria-hidden="true"> ↗</span></a></p>
+        <p>Cofré, H., Vergara, C., Santibáñez, D., y Pavez, J. M. (2022). Preservice science teachers' education around the globe. Trends, challenges, and future directions. En J. Luft y G. M. Jones (Eds.), <em>Handbook of research on science teacher education</em> (pp. 163–177). Routledge. <a class="ref-link" href="https://www.taylorfrancis.com/books/edit/10.4324/9781003098478/handbook-research-science-teacher-education-julie-luft-gail-jones" target="_blank" rel="noopener noreferrer">Ver libro<span aria-hidden="true"> ↗</span></a></p>
+        <p>Darling-Hammond, L., Schachner, A., Flook, L., Cook-Harvey, C., Barron, B., y Osher, D. (2022). <em>Educator learning to enact the science of learning and development</em>. Learning Policy Institute. <a class="ref-link" href="https://learningpolicyinstitute.org/sites/default/files/product-files/Educator_Learning_for_SoLD_REPORT.pdf" target="_blank" rel="noopener noreferrer">Ver informe<span aria-hidden="true"> ↗</span></a></p>
+        <p>Feiman-Nemser, S. (2001). Helping novices learn to teach. <em>Journal of Teacher Education, 52</em>(1), 17–30. <a class="ref-link" href="https://journals.sagepub.com/doi/10.1177/0022487101052001003" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Gibbs, G. (1988). <em>Learning by doing. A guide to teaching and learning methods</em>. Further Education Unit, Oxford Polytechnic. <a class="ref-link" href="https://scholar.google.com/scholar?q=Gibbs%2C+G.+%281988%29.+Learning+by+doing.+A+guide+to+teaching+and+learning+methods.+Further+Education+Unit%2C+Oxford+Polytechnic." target="_blank" rel="noopener noreferrer">Buscar<span aria-hidden="true"> ↗</span></a></p>
+        <p>Korthagen, F. A. J. (2010). Situated learning theory and the pedagogy of teacher education. Towards an integrative view of teacher behavior and teacher learning. <em>Teaching and Teacher Education, 26</em>(1), 98–106. <a class="ref-link" href="https://www.sciencedirect.com/science/article/abs/pii/S0742051X09001103" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Korthagen, F. A. J., y Vasalos, A. (2005). Levels in reflection. Core reflection as a means to enhance professional growth. <em>Teachers and Teaching, 11</em>(1), 47–71. <a class="ref-link" href="https://www.tandfonline.com/doi/abs/10.1080/1354060042000337093" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Larrivee, B. (2008). Development of a tool to assess teachers' level of reflective practice. <em>Reflective Practice, 9</em>(3), 341–360. <a class="ref-link" href="https://www.tandfonline.com/doi/abs/10.1080/14623940802207451" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Ministerio de Educación de Chile. <em>Marco para la Buena Enseñanza</em>. MINEDUC. <a class="ref-link" href="https://bibliotecadigital.mineduc.cl/handle/20.500.12365/17596" target="_blank" rel="noopener noreferrer">Ver en Biblioteca Mineduc<span aria-hidden="true"> ↗</span></a></p>
+        <p>Monsalve, Y., y Pérez, E. (2012). El diario pedagógico como herramienta para la investigación. <em>Itinerario Educativo, 60</em>, 117–128. <a class="ref-link" href="https://dialnet.unirioja.es/descarga/articulo/5163235.pdf" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Montecinos, C., Walker, H., y Maldonado, F. (2015). School administrators and university practicum supervisors as boundary brokers for initial teacher education in Chile. <em>Teaching and Teacher Education, 49</em>, 1–10. <a class="ref-link" href="https://www.sciencedirect.com/science/article/abs/pii/S0742051X15000372" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Perrenoud, P. (2004). <em>Desarrollar la práctica reflexiva en el oficio de enseñar. Profesionalización y razón pedagógica</em>. Graó. <a class="ref-link" href="https://www.grao.com/libros/desarrollar-la-practica-reflexiva-en-el-oficio-de-ensenar-889" target="_blank" rel="noopener noreferrer">Ver libro<span aria-hidden="true"> ↗</span></a></p>
+        <p>Pontificia Universidad Católica de Valparaíso. (2022). <em>Modelo Educativo de la PUCV</em>. Dirección de Desarrollo Curricular y Formativo. <a class="ref-link" href="https://www.pucv.cl/pucv/pregrado/modelo-educativo" target="_blank" rel="noopener noreferrer">Ver documento<span aria-hidden="true"> ↗</span></a></p>
+        <p>Pontificia Universidad Católica de Valparaíso. (2025). <em>Marco Conceptual para la Formación Inicial Docente de la Pontificia Universidad Católica de Valparaíso</em>. Vicerrectoría Académica, Dirección de Pregrado. ISBN digital 978-956-17-1264-5.</p>
+        <p>Pontificia Universidad Católica de Valparaíso. (2026). <em>Proyecto ESR UCV2595. Resumen ejecutivo</em>.</p>
+        <p>Ronfeldt, M. (2021). Links among teacher preparation, retention, and teaching effectiveness. En National Academy of Education, <em>Evaluating and improving teacher preparation programs</em>. National Academy of Education. <a class="ref-link" href="https://naeducation.org/publication/links-among-teacher-preparation-retention-and-teacher-effectiveness/" target="_blank" rel="noopener noreferrer">Ver informe<span aria-hidden="true"> ↗</span></a></p>
+        <p>Schön, D. A. (1983). <em>The reflective practitioner. How professionals think in action</em>. Basic Books. <a class="ref-link" href="https://www.routledge.com/The-Reflective-Practitioner-How-Professionals-Think-in-Action/Schon/p/book/9781857423198" target="_blank" rel="noopener noreferrer">Ver libro<span aria-hidden="true"> ↗</span></a></p>
+        <p>Shulman, L. S. (1986). Those who understand. Knowledge growth in teaching. <em>Educational Researcher, 15</em>(2), 4–14. <a class="ref-link" href="https://doi.org/10.3102/0013189X015002004" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Soto-Lillo, P., y Quiroga-Lobos, M. (2021). University tutors and school mentors. Evaluators in the practical training of future teachers. <em>Teaching and Teacher Education, 107</em>, 103489. <a class="ref-link" href="https://www.sciencedirect.com/science/article/abs/pii/S0742051X21002146" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Vain, P. (2003). El diario académico. Una estrategia para la formación de docentes reflexivos. <em>Perfiles Educativos, 25</em>(100), 56–78. <a class="ref-link" href="https://www.scielo.org.mx/pdf/peredu/v25n100/v25n100a5.pdf" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>van Es, E. A., y Sherin, M. G. (2002). Learning to notice. Scaffolding new teachers' interpretations of classroom interactions. <em>Journal of Technology and Teacher Education, 10</em>(4), 571–596. <a class="ref-link" href="https://www.learntechlib.org/primary/p/9171/" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+        <p>Windschitl, M., y Stroupe, D. (2017). The three-story challenge. Implications of the Next Generation Science Standards for teacher preparation. <em>Journal of Teacher Education, 68</em>(3), 251–261. <a class="ref-link" href="https://scholar.google.com/scholar?q=Windschitl%2C+M.%2C+y+Stroupe%2C+D.+%282017%29.+The+three-story+challenge.+Implications+of+the+Next+Generation+Science+Standards+for+teacher+preparation.+Journal+of+Teacher+Education%2C+68%283%29%2C+251%E2%80%93261." target="_blank" rel="noopener noreferrer">Buscar<span aria-hidden="true"> ↗</span></a></p>
+        <p>Zeichner, K. (2010). Rethinking the connections between campus courses and field experiences in college- and university-based teacher education. <em>Journal of Teacher Education, 61</em>(1–2), 89–99. <a class="ref-link" href="https://doi.org/10.1177/0022487109347671" target="_blank" rel="noopener noreferrer">Ver artículo<span aria-hidden="true"> ↗</span></a></p>
+      </div>
+        </div>
+      </details>
+
+      <p class="cierre">Guía de orientaciones para el acompañamiento en el sistema de prácticas de la Pontificia Universidad Católica de Valparaíso. Elaborada en el marco del Programa Formativo de Mentores y Mentoras, proyecto ESR UCV2595, Red de Campos Pedagógicos PUCV.</p>
+    </footer>
+
+  </article>
+</main>
+
+<script>
+/* progreso de lectura y botón subir */
+const pb = document.getElementById('pb');
+const subirBtn = document.getElementById('subirBtn');
+const marcar = () => {
+  const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  pb.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  if (window.scrollY > 300) { subirBtn.classList.add('visible'); }
+  else { subirBtn.classList.remove('visible'); }
+};
+window.addEventListener('scroll', marcar, { passive: true });
+window.addEventListener('resize', marcar);
+marcar();
+
+subirBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* tema, solo cuando la persona elige; si no, manda el sistema */
+const btn = document.getElementById('tema');
+const leer = () => { try { return localStorage.getItem('tema-red'); } catch (e) { return null; } };
+const guardar = v => { try { localStorage.setItem('tema-red', v); } catch (e) {} };
+const oscuroSistema = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+function rotular() {
+  const t = document.documentElement.getAttribute('data-theme');
+  const oscuroAhora = t === 'dark' || (!t && oscuroSistema());
+  btn.textContent = oscuroAhora ? 'Modo claro' : 'Modo oscuro';
+}
+const elegido = leer();
+if (elegido === 'dark' || elegido === 'light') document.documentElement.setAttribute('data-theme', elegido);
+rotular();
+btn.addEventListener('click', () => {
+  const t = document.documentElement.getAttribute('data-theme');
+  const oscuroAhora = t === 'dark' || (!t && oscuroSistema());
+  const nuevo = oscuroAhora ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nuevo);
+  guardar(nuevo);
+  rotular();
+});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (!leer()) rotular(); });
+
+/* índice: marca la sección visible */
+const enlacesIdx = [...document.querySelectorAll('nav.idx a')];
+const secciones = enlacesIdx
+  .map(a => document.getElementById(a.getAttribute('href').slice(1)))
+  .filter(Boolean);
+if ('IntersectionObserver' in window && secciones.length) {
+  const obs = new IntersectionObserver(entradas => {
+    entradas.forEach(e => {
+      if (!e.isIntersecting) return;
+      const id = e.target.id;
+      enlacesIdx.forEach(a => a.classList.toggle('activo', a.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  secciones.forEach(s => obs.observe(s));
+}
+
+/* apartados colapsables: desplegar todo, y abrir el apartado al que se navega */
+const apartados = [...document.querySelectorAll('details.sec')];
+const botonesTodo = [...document.querySelectorAll('[data-todo]')];
+
+function rotularTodo() {
+  const faltan = apartados.some(d => !d.open);
+  botonesTodo.forEach(b => { b.textContent = faltan ? 'Desplegar todo' : 'Plegar todo'; });
+}
+botonesTodo.forEach(b => {
+  b.addEventListener('click', () => {
+    const abrir = apartados.some(d => !d.open);
+    apartados.forEach(d => { d.open = abrir; });
+    rotularTodo();
+    marcar();
+  });
+});
+apartados.forEach(d => d.addEventListener('toggle', () => { rotularTodo(); marcar(); }));
+rotularTodo();
+
+/* un apartado a la vez: al abrir uno se cierra el que estaba abierto */
+function soloEste(det) {
+  apartados.forEach(o => { if (o !== det) o.open = false; });
+}
+apartados.forEach(d => {
+  d.querySelector('summary').addEventListener('click', () => {
+    if (d.open) return;               // se está cerrando: no hay nada que hacer
+    soloEste(d);
+    const sec = d.closest('section, footer');
+    requestAnimationFrame(() => { if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  });
+});
+
+function abrirDestino(id) {
+  const sec = document.getElementById(id);
+  if (!sec) return null;
+  const det = sec.querySelector('details.sec');
+  if (det) { soloEste(det); det.open = true; }
+  return sec;
+}
+document.querySelectorAll('nav.idx a').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const sec = abrirDestino(id);
+    if (!sec) return;
+    e.preventDefault();
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /* el visor aísla el documento, así que la URL puede no ser modificable */
+    try { history.replaceState(null, '', '#' + id); } catch (err) {}
+  });
+});
+window.addEventListener('hashchange', () => {
+  const sec = abrirDestino(location.hash.slice(1));
+  if (sec) sec.scrollIntoView({ block: 'start' });
+});
+if (location.hash) { const sec = abrirDestino(location.hash.slice(1)); if (sec) sec.scrollIntoView({ block: 'start' }); }
+
+/* pestañas de rol */
+const tabs = [...document.querySelectorAll('.tab:not(.c-tab)')];
+tabs.forEach(t => {
+  t.addEventListener('click', () => {
+    tabs.forEach(o => o.setAttribute('aria-selected', String(o === t)));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+    const destino = document.getElementById('p-' + t.dataset.t);
+    if (destino) destino.classList.add('on');
+  });
+  t.addEventListener('keydown', e => {
+    const i = tabs.indexOf(t);
+    let n = null;
+    if (e.key === 'ArrowRight') n = (i + 1) % tabs.length;
+    if (e.key === 'ArrowLeft') n = (i - 1 + tabs.length) % tabs.length;
+    if (n !== null) { e.preventDefault(); tabs[n].focus(); tabs[n].click(); }
+  });
+});
+
+/* pestañas de ciclos reflexivos */
+const cTabs = [...document.querySelectorAll('.c-tab')];
+cTabs.forEach(t => {
+  t.addEventListener('click', () => {
+    cTabs.forEach(o => o.setAttribute('aria-selected', String(o === t)));
+    document.querySelectorAll('.ciclo-card').forEach(p => p.classList.remove('on'));
+    const selectedCard = document.getElementById(t.dataset.t);
+    if (!selectedCard) return;
+    selectedCard.classList.add('on');
+    const firstNode = selectedCard.querySelector('.cycle-node');
+    if (firstNode) firstNode.click();
+  });
+  t.addEventListener('keydown', e => {
+    const i = cTabs.indexOf(t);
+    let n = null;
+    if (e.key === 'ArrowRight') n = (i + 1) % cTabs.length;
+    if (e.key === 'ArrowLeft') n = (i - 1 + cTabs.length) % cTabs.length;
+    if (n !== null) { e.preventDefault(); cTabs[n].focus(); cTabs[n].click(); }
+  });
+});
+
+/* nodos de cada ciclo */
+const cycleNodes = [...document.querySelectorAll('.cycle-node')];
+cycleNodes.forEach(node => {
+  node.addEventListener('click', () => {
+    const wrapper = node.closest('.cycle-wrapper');
+    wrapper.querySelectorAll('.cycle-node').forEach(n => n.classList.remove('on'));
+    node.classList.add('on');
+    const detailBox = wrapper.querySelector('.cycle-detail');
+    detailBox.querySelector('h5').textContent = node.textContent.trim();
+    detailBox.querySelector('p').textContent = node.dataset.desc;
+  });
+});
+
+/* matriz de posiciones */
+const mBtns = [...document.querySelectorAll('.m-btn')];
+mBtns.forEach(b => {
+  b.addEventListener('click', () => {
+    mBtns.forEach(o => o.setAttribute('aria-selected', String(o === b)));
+    document.querySelectorAll('.m-panel').forEach(p => p.classList.remove('on'));
+    const destino = document.getElementById('m-' + b.dataset.m);
+    if (destino) destino.classList.add('on');
+  });
+});
+
+/* escalera de la pregunta */
+const ladderData = [
+  { meta: "Nivel 1 · Conviene evitarla", q: '«¿Cómo te sentiste en la clase de hoy?»', reason: "Cerrada y descriptiva. Se responde con una palabra y no abre nada.", color: "var(--ink-3)" },
+  { meta: "Nivel 2 · Aceptable", q: '«¿Qué crees que funcionó y qué no funcionó en tu inicio de clase?»', reason: "Analítica. Ya pide una lectura, pero se queda en el resultado de la acción.", color: "var(--ink-3)" },
+  { meta: "Nivel 3 · Lo que buscamos", q: '«Si observamos la reacción de ese estudiante, ¿qué supuesto tuyo sobre su aprendizaje conviene revisar?»', reason: "Genera disonancia y apunta al modelo mental, no al síntoma. Trabaja la capa de las creencias, que es la que señala el descriptor 11.2.", color: "var(--cian)" }
+];
+let ladderIndex = 0;
+const upgBtn = document.getElementById('upgBtn');
+const upgMeta = document.getElementById('upgMeta');
+const upgQ = document.getElementById('upgQ');
+const upgReason = document.getElementById('upgReason');
+const upgDots = document.querySelectorAll('.upg-dot');
+
+if (upgBtn) {
+  upgBtn.addEventListener('click', () => {
+    ladderIndex = (ladderIndex + 1) % ladderData.length;
+    upgMeta.textContent = ladderData[ladderIndex].meta;
+    upgMeta.style.color = ladderData[ladderIndex].color;
+    upgQ.textContent = ladderData[ladderIndex].q;
+    upgReason.textContent = ladderData[ladderIndex].reason;
+    upgDots.forEach((dot, i) => { dot.classList.toggle('active', i === ladderIndex); });
+    if (ladderIndex === ladderData.length - 1) {
+      upgBtn.textContent = 'Reiniciar ↺';
+      upgBtn.style.background = 'var(--cian)';
+    } else {
+      upgBtn.textContent = 'Subir de nivel ⬆️';
+      upgBtn.style.background = 'var(--azul)';
+    }
+  });
+}
+
+/* dos caminos (escenarios) */
+const scTabs = document.querySelectorAll('.sc-tab');
+scTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    scTabs.forEach(t => { t.classList.remove('on'); t.setAttribute('aria-selected', 'false'); });
+    tab.classList.add('on');
+    tab.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.sc-body').forEach(body => body.classList.remove('on'));
+    const destino = document.getElementById(tab.dataset.target);
+    if (destino) destino.classList.add('on');
+  });
+});
+
+const scBtns = document.querySelectorAll('.sc-btn');
+scBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body = btn.closest('.sc-body');
+    body.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('selected'));
+    body.querySelectorAll('.sc-feedback').forEach(f => f.style.display = 'none');
+    btn.classList.add('selected');
+    const feedback = body.querySelector('.' + btn.dataset.path + '-feed');
+    if (feedback) feedback.style.display = 'block';
+  });
+});
+
+/* tarjetas giratorias, para pantallas táctiles */
+const scenes = document.querySelectorAll('.scene');
+scenes.forEach(scene => {
+  scene.addEventListener('click', () => { scene.classList.toggle('is-flipped'); });
+  scene.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scene.classList.toggle('is-flipped'); }
+  });
+});
+
+/* acordeones exclusivos en las secciones de listas largas */
+['#s5', '#s8'].forEach(sel => {
+  const grupo = document.querySelectorAll(sel + ' .sec-body > details.acc');
+  grupo.forEach(acc => {
+    acc.addEventListener('click', () => {
+      if (!acc.open) { grupo.forEach(otro => { if (otro !== acc) otro.open = false; }); }
+    });
+  });
+});
+
+/* términos con definición: en pantallas táctiles se abren al tocar */
+/* la definición se mide ya desplegada y se corre hacia dentro si no cabe */
+function ubicarDefinicion(t) {
+  requestAnimationFrame(() => {
+    t.style.removeProperty('--tt-x');
+    const lim = document.documentElement.clientWidth;
+    const cs = getComputedStyle(t, '::after');
+    const ancho = parseFloat(cs.width) + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)
+                + parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+    if (!ancho) return;
+    /* si el término se parte en dos líneas, la definición cuelga del primer trozo */
+    const caja = t.getClientRects()[0] || t.getBoundingClientRect();
+    const sobra = (caja.left + ancho + 16) - lim;
+    if (sobra > 0) {
+      const corrimiento = Math.max(-Math.ceil(sobra), 16 - caja.left);
+      t.style.setProperty('--tt-x', corrimiento + 'px');
+    }
+  });
+}
+document.querySelectorAll('.term').forEach(t => {
+  t.addEventListener('mouseenter', () => ubicarDefinicion(t));
+  t.addEventListener('focus', () => ubicarDefinicion(t));
+  t.addEventListener('click', e => {
+    ubicarDefinicion(t);
+    e.stopPropagation();
+    document.querySelectorAll('.term.abierto').forEach(o => { if (o !== t) o.classList.remove('abierto'); });
+    t.classList.toggle('abierto');
+  });
+});
+document.addEventListener('click', () => {
+  document.querySelectorAll('.term.abierto').forEach(t => t.classList.remove('abierto'));
+});
+
+/* buscador de preguntas */
+const listaPreg = document.getElementById('listaPreg');
+if (listaPreg) {
+  const preguntas = [...listaPreg.children];
+  const cuentaPreg = document.getElementById('cuentaPreg');
+  const sinPreg = document.getElementById('sinPreg');
+  const filtro = { fn: '', mom: '' };
+
+  function filtrarPreguntas() {
+    let n = 0;
+    preguntas.forEach(li => {
+      const okFn = !filtro.fn || li.dataset.fn === filtro.fn;
+      const okMom = !filtro.mom || li.dataset.mom.split(' ').includes(filtro.mom);
+      const ok = okFn && okMom;
+      li.hidden = !ok;
+      if (ok) n++;
+    });
+    cuentaPreg.textContent = n + ' de ' + preguntas.length + (n === 1 ? ' pregunta' : ' preguntas');
+    sinPreg.hidden = n > 0;
+  }
+
+  document.querySelectorAll('.buscador .chips').forEach(grupo => {
+    grupo.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      grupo.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === chip));
+      filtro[grupo.dataset.grupo] = chip.dataset.v;
+      filtrarPreguntas();
+    });
+  });
+
+  function copiarPregunta(li) {
+    const etq = li.querySelector('.p-fn');
+    const previo = etq.textContent;
+    const avisar = ok => {
+      etq.textContent = ok ? 'Copiada' : 'Cópiala a mano';
+      li.classList.add('copiada');
+      setTimeout(() => { etq.textContent = previo; li.classList.remove('copiada'); }, 1800);
+    };
+    const txt = li.querySelector('.p-txt').textContent;
+    try {
+      navigator.clipboard.writeText(txt).then(() => avisar(true), () => avisar(false));
+    } catch (err) { avisar(false); }
+  }
+  preguntas.forEach(li => {
+    li.addEventListener('click', () => copiarPregunta(li));
+    li.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copiarPregunta(li); }
+    });
+  });
+}
+
+/* pauta de trabajo: se adapta al nivel y al ciclo, y se guarda en este navegador */
+const camposPauta = [...document.querySelectorAll('[data-pf]')];
+if (camposPauta.length) {
+  const CLAVE = 'pauta-foco-pucv';
+  const pfEstado = document.getElementById('pfEstado');
+  const decir = t => { pfEstado.textContent = t; };
+
+  const NIVELES = {
+    inicial: {
+      titulo: 'Práctica Docente Inicial · 5 horas pedagógicas semanales',
+      texto: 'Acompaña a un subgrupo dentro de actividades que planifica la mentoría. No corresponde pedirle clases completas: el foco razonable está en cómo aprenden esos estudiantes, y no en su desempeño docente.',
+      focos: ['Cómo responde el subgrupo a la consigna', 'Qué preguntas formulan los estudiantes', 'Qué hace cuando un estudiante no entiende', 'Qué factores del contexto aparecen en el trabajo del grupo']
+    },
+    intermedia: {
+      titulo: 'Práctica Docente Intermedia II · 9 horas pedagógicas semanales',
+      texto: 'Planifica, implementa y evalúa en dupla una unidad acordada con mentoría y tutoría. Ya corresponde mirar decisiones didácticas y evaluativas, y la reflexión en la acción. Los desempeños que observa la mentoría concentran la ponderación más alta del nivel.',
+      focos: ['Las preguntas que formula durante la clase', 'La transición entre una actividad y la siguiente', 'Cómo recoge evidencia de aprendizaje mientras enseña', 'El reparto de responsabilidades dentro de la dupla', 'La relación entre el objetivo declarado y la actividad propuesta']
+    },
+    final: {
+      titulo: 'Práctica Docente Final · 26 horas semanales durante 18 semanas',
+      texto: 'Asume progresivamente la responsabilidad profesional completa y debe indagar su propia práctica a partir de evidencias. No basta con que la clase haya resultado: corresponde pedir el análisis de por qué resultó.',
+      focos: ['La decisión que tomó al apartarse de lo planificado', 'Qué evidencia levantó y qué hizo con ella', 'La coherencia entre objetivo, actividad y evaluación', 'Cómo responde a lo imprevisto', 'El trabajo con el equipo psicoeducativo o el departamento']
+    }
+  };
+
+  const CICLOS = {
+    alact: [['Acción', '¿Qué ocurrió en la clase?'],
+            ['Mirar atrás', '¿Qué pensabas, qué sentías y qué querían los estudiantes?'],
+            ['Toma de conciencia', '¿Cuál es la brecha entre lo que buscabas y lo que pasó?'],
+            ['Crear alternativas', '¿De qué otras formas podrías abordar esa misma situación?'],
+            ['Ensayo', '¿Qué vas a probar en la próxima oportunidad?']],
+    gibbs: [['Descripción', '¿Qué ocurrió, sin juicios todavía?'],
+            ['Sentimientos', '¿Qué sentías antes, durante y después?'],
+            ['Evaluación', '¿Qué funcionó y qué no?'],
+            ['Análisis', '¿Por qué resultaron así las cosas?'],
+            ['Conclusión', '¿Qué aprendiste sobre ti y sobre tus estudiantes?'],
+            ['Plan de acción', '¿Qué harás distinto la próxima vez?']]
+  };
+
+  const nivelSel = document.getElementById('pf-nivel');
+  const cicloSel = document.getElementById('pf-ciclo');
+  const focoTxt = document.getElementById('pf-foco');
+  const avisoNivel = document.getElementById('pfAvisoNivel');
+  const sugeridos = document.getElementById('pfSugeridos');
+  const chipsFoco = document.getElementById('pfChipsFoco');
+  const cajaFases = document.getElementById('pfFases');
+  const listaFases = document.getElementById('pfFasesLista');
+  const estadoFases = document.getElementById('pfFasesEstado');
+  const barra = document.getElementById('pfBarra');
+  const progreso = document.getElementById('pfProgreso');
+  const btnDescargar = document.getElementById('pfDescargar');
+  let fasesMarcadas = [];
+
+  /* el nivel decide qué es razonable pedir y qué focos calzan */
+  function pintarNivel() {
+    const n = NIVELES[nivelSel.value];
+    avisoNivel.hidden = !n;
+    sugeridos.hidden = !n;
+    if (!n) { chipsFoco.textContent = ''; return; }
+    document.getElementById('pfNivelTitulo').textContent = n.titulo;
+    document.getElementById('pfNivelTexto').textContent = n.texto;
+    chipsFoco.textContent = '';
+    n.focos.forEach(f => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = f;
+      b.addEventListener('click', () => {
+        focoTxt.value = focoTxt.value.trim() ? focoTxt.value.trim() + '\n' + f : f;
+        focoTxt.focus();
+        guardarPauta();
+        medirProgreso();
+      });
+      chipsFoco.appendChild(b);
+    });
+  }
+
+  /* el ciclo elegido despliega sus fases como lista de trabajo */
+  function pintarFases() {
+    const c = CICLOS[cicloSel.value];
+    cajaFases.hidden = !c;
+    listaFases.textContent = '';
+    if (!c) { fasesMarcadas = []; return; }
+    c.forEach((fase, k) => {
+      const fila = document.createElement('label');
+      fila.className = 'fase';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = fasesMarcadas.includes(k);
+      const txt = document.createElement('span');
+      const n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = (k + 1) + ' · ' + fase[0];
+      const q = document.createElement('span');
+      q.className = 'q';
+      q.textContent = fase[1];
+      txt.appendChild(n);
+      txt.appendChild(document.createElement('br'));
+      txt.appendChild(q);
+      fila.appendChild(cb);
+      fila.appendChild(txt);
+      cb.addEventListener('change', () => {
+        fila.classList.toggle('lista', cb.checked);
+        fasesMarcadas = [...listaFases.querySelectorAll('input')].map((x, idx) => x.checked ? idx : -1).filter(x => x >= 0);
+        contarFases();
+        guardarPauta();
+      });
+      fila.classList.toggle('lista', cb.checked);
+      listaFases.appendChild(fila);
+    });
+    contarFases();
+  }
+
+  function contarFases() {
+    const c = CICLOS[cicloSel.value];
+    if (!c) { estadoFases.textContent = ''; return; }
+    estadoFases.textContent = fasesMarcadas.length + ' de ' + c.length + ' fases recorridas';
+  }
+
+  function medirProgreso() {
+    const llenos = camposPauta.filter(c => c.value.trim()).length;
+    const pct = Math.round(llenos / camposPauta.length * 100);
+    barra.style.width = pct + '%';
+    progreso.textContent = llenos ? llenos + ' de ' + camposPauta.length + ' campos completados' : 'Sin completar';
+  }
+
+  /* guardado local */
+  const leerPauta = () => { try { return JSON.parse(localStorage.getItem(CLAVE) || '{}'); } catch (e) { return {}; } };
+  function guardarPauta() {
+    const d = { fases: fasesMarcadas };
+    camposPauta.forEach(c => { d[c.id] = c.value; });
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify(d));
+      decir('Guardado ' + new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }));
+    } catch (e) {
+      decir('Este navegador no deja guardar. Copia o descarga la pauta para no perderla.');
+    }
+  }
+
+  const guardado = leerPauta();
+  camposPauta.forEach(c => { if (guardado[c.id] && !c.value) c.value = guardado[c.id]; });
+  if (Array.isArray(guardado.fases)) fasesMarcadas = guardado.fases;
+  pintarNivel();
+  pintarFases();
+  medirProgreso();
+  if (Object.keys(guardado).length > 1) decir('Recuperado de este navegador');
+
+  let espera = null;
+  camposPauta.forEach(c => c.addEventListener('input', () => {
+    medirProgreso();
+    clearTimeout(espera);
+    espera = setTimeout(guardarPauta, 600);
+  }));
+  nivelSel.addEventListener('change', pintarNivel);
+  cicloSel.addEventListener('change', () => { fasesMarcadas = []; pintarFases(); });
+
+  /* salida en texto */
+  function armar(md) {
+    const v = id => { const x = document.getElementById(id).value.trim(); return x || '—'; };
+    const t1 = t => md ? '# ' + t : t.toUpperCase();
+    const t2 = t => md ? '\n## ' + t : '\n' + t.toUpperCase();
+    const campo = (et, id) => (md ? '**' + et + ':** ' : et + ': ') + v(id);
+    const l = [];
+    l.push(t1('Pauta de foco acordado'));
+    l.push(md ? '*Red de Campos Pedagógicos PUCV · Programa Formativo de Mentores y Mentoras*' : 'Red de Campos Pedagógicos PUCV · Programa Formativo de Mentores y Mentoras');
+    l.push('');
+    l.push(campo('Curso y asignatura', 'pf-curso'));
+    l.push(campo('Profesor o profesora en formación', 'pf-pf'));
+    l.push(campo('Fecha de la clase', 'pf-fecha'));
+    l.push(campo('Próxima sesión de tríada', 'pf-proxima'));
+    l.push(campo('Nivel de práctica', 'pf-nivel'));
+    l.push(t2('Antes de la clase. Qué vamos a mirar'));
+    l.push(campo('Foco acordado', 'pf-foco'));
+    l.push(campo('Dispositivo', 'pf-dispositivo'));
+    l.push(campo('Ciclo reflexivo', 'pf-ciclo'));
+    const c = CICLOS[cicloSel.value];
+    if (c) {
+      l.push('');
+      c.forEach((fase, k) => l.push((fasesMarcadas.includes(k) ? '- [x] ' : '- [ ] ') + fase[0]));
+    }
+    l.push(t2('Durante la clase. Lo que ocurrió'));
+    l.push(campo('Registro sobre el foco', 'pf-registro'));
+    l.push(campo('Evidencia de aprendizaje', 'pf-evidencia'));
+    l.push(t2('Después de la clase. La conversación'));
+    l.push(campo('Dónde difieren las lecturas', 'pf-lecturas'));
+    l.push(campo('Tensión pedagógica central', 'pf-tension'));
+    l.push(campo('Compromiso para la semana siguiente', 'pf-compromiso'));
+    l.push(campo('Nivel de reflexión alcanzado', 'pf-reflexion'));
+    l.push(t2('También la mentoría. Qué me llevo yo'));
+    l.push(v('pf-propia'));
+    return l.join('\n');
+  }
+
+  document.getElementById('pfCopiar').addEventListener('click', () => {
+    const fallo = () => decir('El navegador no permitió copiar. Selecciona el texto a mano.');
+    try {
+      navigator.clipboard.writeText(armar(false)).then(() => decir('Pauta copiada al portapapeles'), fallo);
+    } catch (e) { fallo(); }
+  });
+
+  /* descarga: por la vía del visor de Claude o, si la página está en un sitio propio, directa */
+  let descargas = null;
+  let descargaDirecta = false;
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('downloads').then(d => {
+      if (d) { descargas = d; btnDescargar.hidden = false; }
+    }, () => {});
+  } else {
+    descargaDirecta = true;
+    btnDescargar.hidden = false;
+  }
+
+  function nombreArchivo() {
+    return 'pauta-foco-' + (document.getElementById('pf-fecha').value || 'sin-fecha') + '.md';
+  }
+
+  btnDescargar.addEventListener('click', () => {
+    if (descargaDirecta) {
+      try {
+        const url = URL.createObjectURL(new Blob([armar(true)], { type: 'text/markdown;charset=utf-8' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nombreArchivo();
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+        decir('Pauta descargada');
+      } catch (e) {
+        decir('No se pudo descargar. Usa Copiar la pauta.');
+      }
+      return;
+    }
+    if (!descargas) return;
+    decir('Esperando tu confirmación…');
+    descargas.save({ filename: nombreArchivo(), data: armar(true) }).then(
+      r => decir(r.status === 'saved' ? 'Pauta descargada' : 'Pauta entregada'),
+      e => {
+        const c = e && e.code;
+        if (c === 'declined') decir('Descarga cancelada');
+        else if (c === 'rate_limited') decir('Hay otra descarga en curso. Inténtalo en un momento.');
+        else { decir('Aquí no se puede descargar. Usa Copiar la pauta.'); btnDescargar.hidden = true; }
+      });
+  });
+
+  document.getElementById('pfVaciar').addEventListener('click', () => {
+    camposPauta.forEach(c => { c.value = ''; });
+    fasesMarcadas = [];
+    try { localStorage.removeItem(CLAVE); } catch (e) {}
+    pintarNivel();
+    pintarFases();
+    medirProgreso();
+    decir('Pauta vaciada');
+  });
+}
+</script>
